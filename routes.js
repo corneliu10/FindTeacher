@@ -1,10 +1,11 @@
 import {
     createStackNavigator,
-    createAppContainer
+    createAppContainer,
 } from 'react-navigation';
 
 import Login from './screens/Login';
 import Register from './screens/Register';
+import Home from './screens/Home';
 
 const MainNavigator = createStackNavigator(
 {
@@ -14,6 +15,9 @@ const MainNavigator = createStackNavigator(
     Register: {
         screen: Register,
     },
+    Home: {
+        screen: Home
+    }
 },
 {
     initialRouteName: 'Login',

@@ -5,21 +5,54 @@ import LoginButton from "../components/LoginButton";
 
 export default class Login extends React.Component {
   state = {
-    email: null,
-    password: null
+    email: "A",
+    password: "a",
+    users: []
+  };
+
+  componentDidMount = function() {
+    this.setState({
+      users: [
+        ...this.state.users,
+        {
+          email: "A",
+          password: "a"
+        }
+      ]
+    });
   };
 
   handleLogin = () => {
-    alert("Login");
+    const { email, password } = this.state;
+    const loginUser = this.state.users.find(user => {
+      if (user.email == email && user.password == password) return true;
+    });
+
+    if (loginUser) {
+      const { navigation } = this.props;
+      navigation.navigate('Home');
+    } else {
+      alert("User not found.. Try again!");
+    }
   };
 
   handleRegister = () => {
-    alert("Register");
+    const { navigation } = this.props;
+    navigation.navigate("Register", { onGoBack: this.addUser });
+    this.setState({
+      email: "",
+      password: ""
+    });
+  };
+
+  addUser = user => {
+    this.state.users.push(user);
+    console.log("Name: " + user.name);
+    console.log("Email: " + user.email);
+    console.log("Password: " + user.password);
   };
 
   render() {
-    const { navigation } = this.props;
-    const nr = navigation.getParam("id", 0);
     return (
       <View style={styles.container}>
         <View style={styles.loginContainer}>
