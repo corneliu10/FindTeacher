@@ -7,9 +7,11 @@ An app developed in React-Native that helps you find a teacher that is perfect f
 ```bash
 git clone git@github.com:corneliu10/FindTeacher.git
 
+cd FindTeacher
+
 npm install -g expo-cli #if expo-cli not installed
 
-cd FindTeacher
+npm install
 
 npm start #you can also use: expo start
 ```
