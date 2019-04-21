@@ -71,7 +71,7 @@ export default class Login extends React.Component {
           />
           <View style={{ flexDirection: "row" }}>
             <LoginButton onPress={this.handleLogin} text={"Login"} />
-            <LoginButton onPress={this.handleRegister} text={"Register"} />
+            <LoginButton onPress={this.handleRegister} text={"Register"} />     
           </View>
         </View>
       </View>

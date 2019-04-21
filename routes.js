@@ -6,6 +6,7 @@ import {
 import Login from './screens/Login';
 import Register from './screens/Register';
 import Home from './screens/Home';
+import Calendar from './screens/Calendar';
 
 const MainNavigator = createStackNavigator(
 {
@@ -17,13 +18,16 @@ const MainNavigator = createStackNavigator(
     },
     Home: {
         screen: Home
+    },
+    Calendar: {
+        screen: Calendar
     }
 },
 {
     initialRouteName: 'Login',
     headerMode: 'none',
     defaultNavigationOptions: {
-    
+
     }
 });
 
