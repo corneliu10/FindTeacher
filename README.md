@@ -11,6 +11,8 @@ cd FindTeacher
 
 npm install -g expo-cli #if expo-cli not installed
 
+npm install --save react-native-calendars
+
 npm install
 
 npm start #you can also use: expo start
