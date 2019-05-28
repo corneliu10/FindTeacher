@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 
 export const MessageShape = PropTypes.shape({
     id: PropTypes.number.isRequired,
+    key: PropTypes.string,
     type: PropTypes.oneOf(['text', 'image', 'location']),
     sent: PropTypes.bool,
     text: PropTypes.string,
@@ -19,12 +20,13 @@ function getNextId() {
     return messageId;
 }
 
-export function createTextMessage(text, sent) {
+export function createTextMessage(text, sent, key = "") {
     return {
         type: 'text',
         id: getNextId(),
         text,
         sent,
+        key
     };
 }
 

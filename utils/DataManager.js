@@ -46,8 +46,7 @@ export default class DataManager {
     }
 
     sentMessageTo(receiverUserId, item) {
-        // if (!this._userID || !receiverUserId) return;
-        this._userID = "ISEeatjPtJaI2dwi7xebWZMd9Sg2";
+        if (!this._userID || !receiverUserId) return;
 
         const senderPath = "/user/" + this._userID + "/messages/" + receiverUserId;
         const receiverPath = "/user/" + receiverUserId + "/messages/" + this._userID;
@@ -65,17 +64,46 @@ export default class DataManager {
         });
     }
 
-    getMessagesWith(otherId) {
-        this._userID = "ISEeatjPtJaI2dwi7xebWZMd9Sg2";
-
+    getMessagesWith(otherId, callback) {
         const path = "/user/" + this._userID + "/messages/" + otherId;
 
         const ref = firebase.database().ref(path);
-        ref.on("value", function(snapshot) {
-            console.log(snapshot.val());
+        ref.once("value", function (snapshot) {
+            snapshot.forEach((childSnapshot) => {
+                var childKey = childSnapshot.key;
+                var childData = childSnapshot.val();
+
+                // console.log(childKey);
+                // console.log(childData);
+                const data = {
+                    text: childData.text,
+                    sent: childData.sent,
+                    key: childKey
+                };
+                callback(data);
+            })
         }, function (error) {
             console.log("Error: " + error.code);
         });
+    }
+
+    listenMessagesWith(otherId, callback) {
+        const path = "/user/" + this._userID + "/messages/" + otherId;
+
+        firebase.database().ref(path).on('child_added', (snapshot, prevChild) => {
+            if (snapshot.val()) {
+                const key = snapshot.key;
+                const { text, sent } = snapshot.val()
+
+                callback({ text, sent, key });
+            }
+        });
+    }
+
+    removeListenerWith(otherId) {
+        const path = "/user/" + this._userID + "/messages/" + otherId;
+
+        firebase.database().ref(path).off('child_added');
     }
 
     getFirebase() {

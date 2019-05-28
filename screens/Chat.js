@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import {
-    View, Text, Button,
+    View, Text, TouchableOpacity,
     StyleSheet, KeyboardAvoidingView
 } from "react-native";
 
 import MessageList from '../components/MessageList';
 import ChatToolbar from '../components/ChatToolbar';
+import LoginButton from '../components/LoginButton';
+
 import {
     createImageMessage,
     createLocationMessage,
@@ -17,9 +19,7 @@ export default class Chat extends React.Component {
     state = {
         messages: [
             // createImageMessage('https://unsplash.it/300/300'),
-            createTextMessage('World', true),
-            createTextMessage('You', false),
-            createTextMessage('Hello', true),
+            // createTextMessage('World', true),
         ],
         isInputFocused: false,
     };
@@ -27,7 +27,19 @@ export default class Chat extends React.Component {
     dataManager = DataManager.getInstance();
 
     componentDidMount() {
-        this.dataManager.getMessagesWith("6D5TDGIIhFQOax8zVRnAxGrqhOP2"); 
+        const { navigation } = this.props;
+        const otherId = navigation.getParam('otherId', 'defaultid');
+        console.log(otherId);
+
+        this.getMessages(otherId);
+        this.dataManager.listenMessagesWith(otherId, this.addMessage);
+    }
+
+    componentWillUnmount() {
+        const { navigation } = this.props;
+        const otherId = navigation.getParam('otherId', 'defaultid');
+        
+        this.dataManager.removeListenerWith(otherId);
     }
 
     handlePressToolbarCamera = () => {
@@ -41,12 +53,24 @@ export default class Chat extends React.Component {
     handlePressMessage = () => { }
 
     handleSubmit = (text) => {
-        const { messages } = this.state;
-        this.dataManager.sentMessageTo("6D5TDGIIhFQOax8zVRnAxGrqhOP2", text);
+        const { navigation } = this.props;
+        const otherId = navigation.getParam('otherId', 'defaultid');
+        
+        this.dataManager.sentMessageTo(otherId, text);
+    }
 
-        this.setState({
-            messages: [createTextMessage(text, true), ...messages],
+    addMessage = ({ text, sent, key }) => {
+        const found = this.state.messages.find((msg) => {
+            if (msg.key == key) {
+                return true;
+            }
         })
+
+        if (!found) {
+            this.setState({
+                messages: [createTextMessage(text, sent, key), ...this.state.messages],
+            })
+        }
     }
 
     renderToolbar() {
@@ -64,14 +88,21 @@ export default class Chat extends React.Component {
         );
     }
 
+    getMessages = (otherId) => {
+        this.dataManager.getMessagesWith(otherId, this.addMessage);
+    }
+
     render() {
         const { messages } = this.state;
 
         return (
-            <KeyboardAvoidingView style={styles.content} behavior="padding" enabled>
-                <MessageList messages={messages} onPressMessage={this.handlePressMessage} />
-                {this.renderToolbar()}
-            </KeyboardAvoidingView>
+            <View style={styles.content}>
+                <View style={styles.header} />
+                <KeyboardAvoidingView style={styles.content} behavior="padding" enabled>
+                    <MessageList messages={messages} onPressMessage={this.handlePressMessage} />
+                    {this.renderToolbar()}
+                </KeyboardAvoidingView>
+            </View>
         );
     };
 }
@@ -80,5 +111,12 @@ const styles = StyleSheet.create({
     content: {
         flex: 1,
         backgroundColor: 'white'
+    },
+    header: {
+        height: 40,
+        backgroundColor: 'red',
+        zIndex: 9,
+        borderBottomColor: 'blue',
+        borderBottomWidth: 1,
     }
 })

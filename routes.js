@@ -25,7 +25,7 @@ const MainNavigator = createStackNavigator(
     }
 },
 {
-    initialRouteName: 'Chat',
+    initialRouteName: 'Login',
     headerMode: 'none',
     defaultNavigationOptions: {
     
