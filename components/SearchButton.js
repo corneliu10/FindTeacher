@@ -7,7 +7,6 @@ import { Ionicons } from "@expo/vector-icons";
 const WIDTH = Dimensions.get('window').width;
 
 export const SearchButton = function(props) {
-
     return (
         <TouchableOpacity onPress={this.handleOnPress} style={styles.container} >
             <View style={styles.leftCol}>
