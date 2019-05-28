@@ -4,6 +4,7 @@ import { MapView, Permissions, Location } from 'expo';
 
 import { SearchButton } from "../components/SearchButton";
 import { CurrentLocationButton } from "../components/CurrentLocationButton";
+import { MenuButton } from "../components/MenuButton";
 
 export default class Register extends React.Component {
   constructor(props) {
@@ -67,12 +68,18 @@ export default class Register extends React.Component {
     })
   }
 
+  openMenu = () => {
+    const { navigation } = this.props;
+    navigation.navigate("Menu");
+  }
+
   render() {
     const { navigation } = this.props;
     return (
       <View style={styles.container}>
         <SearchButton />
         <CurrentLocationButton centerMap={this.centerMap} />
+        <MenuButton openMenu={this.openMenu} />
         <MapView
           initialRegion={this.state.region}
           showsUserLocation={true}

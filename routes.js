@@ -6,6 +6,7 @@ import {
 import Login from './screens/Login';
 import Register from './screens/Register';
 import Home from './screens/Home';
+import Menu from './screens/Menu';
 
 const MainNavigator = createStackNavigator(
 {
@@ -17,6 +18,9 @@ const MainNavigator = createStackNavigator(
     },
     Home: {
         screen: Home
+    },
+    Menu: {
+        screen: Menu
     }
 },
 {
