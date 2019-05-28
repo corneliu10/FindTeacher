@@ -1,21 +1,88 @@
 import React, { Component } from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
+import { MapView, Permissions, Location } from 'expo';
+
+import { SearchButton } from "../components/SearchButton";
+import { CurrentLocationButton } from "../components/CurrentLocationButton";
 
 export default class Register extends React.Component {
-  state = {};
+  constructor(props) {
+    super(props);
 
-  componentDidMount = function() {
+    this.state = {
+      region: null,
+      markers: [
+        {
+          latitude: 45.65,
+          longitude: -78.90,
+          title: 'Foo Place',
+          subtitle: '1234 Foo Drive'
+        }
+      ]
+    }
+
+    this.setLocationAsync()
+  }
+
+  componentDidMount = function () {
     const { navigation } = this.props;
- 
     console.log("home");
+  }
+
+  setLocationAsync = async () => {
+    const { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted')
+      console.log("Permissions for accessing location not granted!")
+
+    const location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true })
+    const region = {
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+      latitudeDelta: 0.045,
+      longitudeDelta: 0.045
+    }
+
+    console.log(region)
+    this.setState({ region })
+  }
+
+  centerMap = () => {
+    if (this.state.region === null) {
+      console.log("Region not loaded yet!");
+      return;
+    }
+
+    const {
+      latitude,
+      longitude,
+      latitudeDelta,
+      longitudeDelta
+    } = this.state.region
+
+    this.map.animateToRegion({
+      latitude,
+      longitude,
+      latitudeDelta,
+      longitudeDelta
+    })
   }
 
   render() {
     const { navigation } = this.props;
     return (
       <View style={styles.container}>
-        <Text>Home</Text>
-        <Button onPress={() => navigation.replace("Login")} title="Log out" />
+        <SearchButton />
+        <CurrentLocationButton centerMap={this.centerMap} />
+        <MapView
+          initialRegion={this.state.region}
+          showsUserLocation={true}
+          showsCompass={true}
+          rotateEnabled={true}
+          ref={(map) => { this.map = map }}
+          style={styles.mapView}
+        >
+
+        </MapView>
       </View>
     );
   }
@@ -24,7 +91,8 @@ export default class Register extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
+  },
+  mapView: {
+    flex: 1
   }
 });

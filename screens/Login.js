@@ -2,36 +2,32 @@ import React from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 
 import LoginButton from "../components/LoginButton";
+import DataManager from "../utils/DataManager";
 
 export default class Login extends React.Component {
   state = {
-    email: "A",
-    password: "a",
-    users: []
+    email: "a@a.com",
+    password: "123456",
   };
+
+  dataManager = DataManager.getInstance();
 
   componentDidMount = function() {
-    this.setState({
-      users: [
-        ...this.state.users,
-        {
-          email: "A",
-          password: "a"
-        }
-      ]
-    });
   };
 
-  handleLogin = () => {
+  handleLogin = async () => {
     const { email, password } = this.state;
-    const loginUser = this.state.users.find(user => {
-      if (user.email == email && user.password == password) return true;
-    });
+    const firebase = this.dataManager.getFirebase();
 
-    if (loginUser) {
+    try {
+      var authJson = await firebase.auth().signInWithEmailAndPassword(email, password);
+      var uid = authJson["user"]["uid"];
+      this.dataManager.setUserID(uid);
+
       const { navigation } = this.props;
       navigation.navigate('Home');
-    } else {
+    } catch (error) {
+      console.log(error.toString());
       alert("User not found.. Try again!");
     }
   };
@@ -43,13 +39,6 @@ export default class Login extends React.Component {
       email: "",
       password: ""
     });
-  };
-
-  addUser = user => {
-    this.state.users.push(user);
-    console.log("Name: " + user.name);
-    console.log("Email: " + user.email);
-    console.log("Password: " + user.password);
   };
 
   render() {

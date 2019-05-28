@@ -2,21 +2,34 @@ import React, { Component } from "react";
 import { View, TextInput, StyleSheet } from "react-native";
 
 import LoginButton from "../components/LoginButton";
+import DataManager from "../utils/DataManager";
 
 export default class Register extends React.Component {
   state = {
-    name: "",
-    email: "",
-    password: ""
+    name: "aba",
+    email: "b@c.com",
+    password: "123456",
   };
 
-  handleRegister = () => {
+  dataManager = DataManager.getInstance();
+
+  handleRegister = async () => {
     const { navigation } = this.props;
     const { name, email, password } = this.state;
+    const firebase = this.dataManager.getFirebase();
 
     if (name != "" && email != "" && password != "") {
-      navigation.goBack();
-      navigation.state.params.onGoBack({ name, email, password });
+      try {
+        var authJson = await firebase.auth().createUserWithEmailAndPassword(email, password);
+        var uid = authJson["user"]["uid"];
+        this.dataManager.setUserName(uid, name);
+
+        alert("Account created");
+        navigation.goBack();
+        // navigation.state.params.onGoBack({ name, email, password });
+      } catch (error) {
+        alert(error.toString());
+      }
     }
   };
 
