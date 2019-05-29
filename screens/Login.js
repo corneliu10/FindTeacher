@@ -12,7 +12,7 @@ export default class Login extends React.Component {
 
   dataManager = DataManager.getInstance();
 
-  componentDidMount = function() {
+  componentDidMount = function () {
   };
 
   handleLogin = async () => {
@@ -25,7 +25,9 @@ export default class Login extends React.Component {
       this.dataManager.setUserID(uid);
 
       const { navigation } = this.props;
-      navigation.navigate('Home');
+      navigation.navigate('Chat', {
+        otherId: "0gjpCU1oGEXHK9nBdWz3pD5feM73",
+      });
     } catch (error) {
       console.log(error.toString());
       alert("User not found.. Try again!");
