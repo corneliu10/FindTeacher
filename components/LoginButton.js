@@ -17,13 +17,14 @@ export default class LoginButton extends React.Component {
 
 const styles = StyleSheet.create({
   defaultButton: {
-    backgroundColor: "#81D6E3",
+    backgroundColor: "#00BFFF",
     borderRadius: 40,
     justifyContent: "center",
     alignItems: "center",
     padding: 10,
-    width: 100,
-    margin: 5,
+    width: 90,
+    margin: 10,
+    marginTop: 20
   },
   defaultText: {
     color: "white",

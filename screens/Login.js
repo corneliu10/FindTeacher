@@ -3,6 +3,7 @@ import { View, Text, TextInput, StyleSheet } from "react-native";
 
 import LoginButton from "../components/LoginButton";
 import DataManager from "../utils/DataManager";
+import { Ionicons } from "@expo/vector-icons";
 
 class Login extends React.Component {
   state = {
@@ -46,6 +47,12 @@ class Login extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.loginContainer}>
+          <View style={styles.title}>
+            <Text>
+              Find a Teacher
+            </Text>
+            <Ionicons name="md-book" color="#000000" size={25} style={{ alignSelf: 'center' }} />
+          </View>
           <TextInput
             style={styles.textInput}
             onChangeText={email => this.setState({ email })}
@@ -60,8 +67,8 @@ class Login extends React.Component {
             secureTextEntry={true}
           />
           <View style={{ flexDirection: "row" }}>
-            <LoginButton onPress={this.handleLogin} text={"Login"} />
-            <LoginButton onPress={this.handleRegister} text={"Register"} />
+            <LoginButton onPress={this.handleLogin} text={"Sign in"} />
+            <LoginButton onPress={this.handleRegister} text={"Sign up"} />
           </View>
         </View>
       </View>
@@ -75,19 +82,31 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    backgroundColor: '#00BFFF'
   },
   loginContainer: {
-    borderColor: "red",
-    borderWidth: 2,
-    alignItems: "center"
+    borderColor: "#fff",
+    borderWidth: 1,
+    backgroundColor: '#FFF',
+    borderRadius: 3,
+    alignItems: "center",
+    shadowColor: '#000000',
+    elevation: 7,
+    shadowRadius: 5,
+    shadowOpacity: 1.0,
+    padding: 15
   },
   textInput: {
     height: 40,
     width: 200,
-    borderColor: "red",
-    borderWidth: 1,
+    borderColor: "black",
+    borderBottomWidth: 1,
     margin: 5,
     paddingLeft: 5
+  },
+  title: {
+    fontSize: 26,
+    padding: 10
   }
 });
