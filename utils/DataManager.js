@@ -3,7 +3,7 @@ import * as firebase from "firebase";
 export default class DataManager {
     static instance = null;
 
-   firebaseConfig = {
+    firebaseConfig = {
         apiKey: "AIzaSyC_jaattGTmzay6T8qcMYOZJGPwcOB7eVE",
         authDomain: "findteacher-1bade.firebaseapp.com",
         databaseURL: "https://findteacher-1bade.firebaseio.com",
@@ -11,7 +11,7 @@ export default class DataManager {
         storageBucket: "findteacher-1bade.appspot.com",
         messagingSenderId: "39740115699",
         appId: "1:39740115699:web:644df834e9edf185"
-      };
+    };
 
     _userID = null;
 
@@ -35,10 +35,31 @@ export default class DataManager {
      * @returns {firebase.Promise<any>|!firebase.Promise.<void>}
      */
     setUserName(userId, name) {
-        let userNamePath = "/user/" + userId + "/name";
+        let userNamePath = "/user/" + userId;
 
         return firebase.database().ref(userNamePath).set({
             name: name
+        });
+    }
+
+    searchUsers(userName, callback) {
+        let path = "/user/";
+        if (userName.length <= 2) return;
+
+        firebase.database().ref(path).once('value', (snapshot) => {
+            if (snapshot.key) {
+                snapshot.forEach((child) => {
+                    const key = child.key;
+                    const { name } = child.val();
+                    
+                    if (name.toLowerCase().includes(userName.toLowerCase())) {
+                        // console.log(key);
+                        // console.log(name);
+                        
+                        callback({ key, name });
+                    }
+                })
+            }
         });
     }
 
