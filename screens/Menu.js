@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { NavigationActions } from "react-navigation";
+import DataManager from "../utils/DataManager";
 import {
   ScrollView,
   Text,
@@ -7,11 +7,37 @@ import {
   StyleSheet,
   TouchableOpacity
 } from "react-native";
-import { StackNavigator } from "react-navigation";
 import { Ionicons } from "@expo/vector-icons";
 
 class Menu extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  async logout() {
+    try {
+      dataManager = DataManager.getInstance();
+      const firebase = dataManager.getFirebase();
+      await firebase.auth().signOut();
+
+      const { navigation } = this.props;
+      navigation.navigate("Login");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  openProfile() {
+    try {
+      const { navigation } = this.props;
+      navigation.navigate('Home');
+    }catch (error) {
+      console.log(error);
+    }
+  }
+
   render() {
+    const { navigation } = this.props;
     const { goBack } = this.props.navigation;
     return (
       <View style={styles.container}>
@@ -27,27 +53,35 @@ class Menu extends Component {
         </View>
         <ScrollView>
           <View>
-            <Text style={styles.sectionHeadingStyle}>Section 1</Text>
             <View style={styles.navSectionStyle}>
-              <Text style={styles.navItemStyle}>Page1</Text>
-            </View>
-          </View>
-          <View>
-            <Text style={styles.sectionHeadingStyle}>Section 2</Text>
-            <View style={styles.navSectionStyle}>
-              <Text style={styles.navItemStyle}>Page2</Text>
-              <Text style={styles.navItemStyle}>Page3</Text>
-            </View>
-          </View>
-          <View>
-            <Text style={styles.sectionHeadingStyle}>Section 3</Text>
-            <View style={styles.navSectionStyle}>
-              <Text style={styles.navItemStyle}>Page4</Text>
+              <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+                <Text style={styles.navItemStyle}>Home</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate("ProfileView")}>
+                <Text style={styles.navItemStyle}>My profile</Text>
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Text style={styles.navItemStyle}>Settings</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </ScrollView>
         <View style={styles.footerContainer}>
-          <Text>This is my fixed footer</Text>
+          <TouchableOpacity
+            style={{ textAlign: "center" }}
+            onPress={async () => {
+              try {
+                dataManager = DataManager.getInstance();
+                const firebase = dataManager.getFirebase();
+                await firebase.auth().signOut();
+                navigation.navigate("Login");
+              } catch (error) {
+                console.log(error);
+              }
+            }}
+          >
+            <Text style={styles.footerText}>Log out</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -72,7 +106,14 @@ const styles = StyleSheet.create({
   },
   footerContainer: {
     padding: 20,
-    backgroundColor: "lightgrey"
+    backgroundColor: "red",
+    color: "#fff",
+    textAlign: "center"
+  },
+  footerText: {
+    color: "#fff",
+    padding: 10,
+    textAlign: "center"
   },
   toolbar: {
     backgroundColor: "#fff",

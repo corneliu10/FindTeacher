@@ -10,7 +10,7 @@ import Driver from "../components/Driver";
 import DataManager from "../utils/DataManager";
 import { MenuButton } from "../components/MenuButton";
 
-export default class Register extends React.Component {
+class Home extends React.Component {
   constructor(props) {
     super(props);
 
@@ -160,6 +160,8 @@ export default class Register extends React.Component {
     );
   }
 }
+
+export default Home;
 
 const styles = StyleSheet.create({
   container: {

@@ -9,6 +9,8 @@ import Register from './screens/Register';
 import Home from './screens/Home';
 import Chat from "./screens/Chat";
 import Menu from './screens/Menu';
+import ProfileView from './screens/ProfileView';
+import EditProfileView from './screens/EditProfileView';
 
 const MainNavigator = createStackNavigator(
 {
@@ -26,7 +28,13 @@ const MainNavigator = createStackNavigator(
     },
     Menu: {
         screen: Menu
-    }
+    },
+    ProfileView: {
+        screen: ProfileView,
+    },
+    EditProfileView: {
+        screen: EditProfileView,
+    },
 },
 {
     initialRouteName: 'Login',
