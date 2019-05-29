@@ -4,7 +4,7 @@ import { View, Text, TextInput, StyleSheet } from "react-native";
 import LoginButton from "../components/LoginButton";
 import DataManager from "../utils/DataManager";
 
-export default class Login extends React.Component {
+class Login extends React.Component {
   state = {
     email: "a@a.com",
     password: "123456",
@@ -42,6 +42,7 @@ export default class Login extends React.Component {
   };
 
   render() {
+    const { navigation } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.loginContainer}>
@@ -67,6 +68,8 @@ export default class Login extends React.Component {
     );
   }
 }
+
+export default Login;
 
 const styles = StyleSheet.create({
   container: {

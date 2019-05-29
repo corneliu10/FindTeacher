@@ -6,7 +6,7 @@ import { SearchButton } from "../components/SearchButton";
 import { CurrentLocationButton } from "../components/CurrentLocationButton";
 import { MenuButton } from "../components/MenuButton";
 
-export default class Register extends React.Component {
+class Home extends React.Component {
   constructor(props) {
     super(props);
 
@@ -94,6 +94,8 @@ export default class Register extends React.Component {
     );
   }
 }
+
+export default Home;
 
 const styles = StyleSheet.create({
   container: {
