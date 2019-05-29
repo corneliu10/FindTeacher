@@ -8,7 +8,6 @@ import { MenuButton } from "../components/MenuButton";
 import SearchResult from "../components/SearchResult";
 import Driver from "../components/Driver";
 import DataManager from "../utils/DataManager";
-import { MenuButton } from "../components/MenuButton";
 
 class Home extends React.Component {
   constructor(props) {

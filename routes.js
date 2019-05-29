@@ -11,9 +11,6 @@ import Menu from './screens/Menu';
 import ProfileView from './screens/ProfileView';
 import EditProfileView from './screens/EditProfileView';
 import Chat from "./screens/Chat";
-import Menu from './screens/Menu';
-import ProfileView from './screens/ProfileView';
-import EditProfileView from './screens/EditProfileView';
 
 const MainNavigator = createStackNavigator(
 {
