@@ -10,14 +10,15 @@ export default class Register extends React.Component {
   state = {
     name: "aba",
     email: "b@c.com",
-    password: "123456"
+    password: "123456",
+    isTeacher: false
   };
 
   dataManager = DataManager.getInstance();
 
   handleRegister = async () => {
     const { navigation } = this.props;
-    const { name, email, password } = this.state;
+    const { name, email, password, isTeacher } = this.state;
     const firebase = this.dataManager.getFirebase();
 
     if (name != "" && email != "" && password != "") {
@@ -26,7 +27,8 @@ export default class Register extends React.Component {
           .auth()
           .createUserWithEmailAndPassword(email, password);
         var uid = authJson["user"]["uid"];
-        this.dataManager.setUserName(uid, name);
+        console.log("register: " + uid);
+        this.dataManager.setUserDetails(uid, email, name, isTeacher)
 
         alert("Account created");
         navigation.goBack();
@@ -38,6 +40,8 @@ export default class Register extends React.Component {
   };
 
   render() {
+    const { isTeacher } = this.state;
+
     return (
       <View style={styles.container}>
         <View style={styles.loginContainer}>
@@ -61,6 +65,8 @@ export default class Register extends React.Component {
             onChangeText={email => this.setState({ email })}
             value={this.state.email}
             autoComplete="email"
+            keyboardType='email-address'
+            autoCapitalize='none'
             placeholder={"Email"}
           />
           <TextInput
@@ -72,14 +78,14 @@ export default class Register extends React.Component {
           />
           <View style={styles.toggleButton}>
             <ToggleSwitch
-              isOn={true}
+              isOn={isTeacher}
               onColor="#00BFFF"
               offColor="#ededed"
               size="medium"
               label="Teacher"
               labelStyle={{ color: "#00BFFF", fontWeight: "bold" }}
               onToggle={isOn => {
-                console.log("changed to : ", isOn);
+                this.setState({ isTeacher: isOn });
               }}
             />
           </View>

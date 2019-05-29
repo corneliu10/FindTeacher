@@ -5,7 +5,7 @@ import LoginButton from "../components/LoginButton";
 import DataManager from "../utils/DataManager";
 import { Ionicons } from "@expo/vector-icons";
 
-class Login extends React.Component {
+export default class Login extends React.Component {
   state = {
     email: "a@a.com",
     password: "123456",
@@ -58,6 +58,9 @@ class Login extends React.Component {
             onChangeText={email => this.setState({ email })}
             value={this.state.email}
             placeholder={"Email"}
+            autoComplete='email'
+            keyboardType='email-address'
+            autoCapitalize='none'
           />
           <TextInput
             style={styles.textInput}
@@ -75,8 +78,6 @@ class Login extends React.Component {
     );
   }
 }
-
-export default Login;
 
 const styles = StyleSheet.create({
   container: {
