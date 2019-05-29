@@ -34,10 +34,8 @@ export default class DataManager {
      * @param name
      * @returns {firebase.Promise<any>|!firebase.Promise.<void>}
      */
-    setUserName(name) {
-        if (this._userID == null) return;
-
-        const userNamePath = "/user/" + this._userId;
+    setUserName(userId, name) {
+        const userNamePath = "/user/" + userId;
 
         console.log("add name to user " + userNamePath);
         return firebase.database().ref(userNamePath).set({

@@ -41,7 +41,6 @@ export default class Register extends React.Component {
       longitudeDelta: 0.045
     }
 
-    console.log(region)
     this.setState({ region })
   }
 
@@ -94,7 +93,13 @@ export default class Register extends React.Component {
   }
 
   handleOnPressResult = (item) => {
-    console.log(item);
+    if (item.key) {
+      console.log(item);
+      const { navigation } = this.props;
+      navigation.navigate('Chat', {
+        otherId: item.key,
+      });
+    }
   }
 
   render() {
