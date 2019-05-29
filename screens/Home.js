@@ -2,9 +2,12 @@ import React, { Component } from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
 import { MapView, Permissions, Location } from 'expo';
 
-import { SearchButton } from "../components/SearchButton";
+import SearchButton from "../components/SearchButton";
 import { CurrentLocationButton } from "../components/CurrentLocationButton";
 import { MenuButton } from "../components/MenuButton";
+import SearchResult from "../components/SearchResult";
+import Driver from "../components/Driver";
+import DataManager from "../utils/DataManager";
 
 class Home extends React.Component {
   constructor(props) {
@@ -12,22 +15,17 @@ class Home extends React.Component {
 
     this.state = {
       region: null,
-      markers: [
-        {
-          latitude: 45.65,
-          longitude: -78.90,
-          title: 'Foo Place',
-          subtitle: '1234 Foo Drive'
-        }
-      ]
+      searchVisible: false,
+      results: []
     }
 
     this.setLocationAsync()
   }
 
+  dataManager = DataManager.getInstance();
+
   componentDidMount = function () {
     const { navigation } = this.props;
-    console.log("home");
   }
 
   setLocationAsync = async () => {
@@ -43,8 +41,25 @@ class Home extends React.Component {
       longitudeDelta: 0.045
     }
 
-    console.log(region)
     this.setState({ region })
+  }
+
+  addResult = ({ key, name }) => {
+    this.setState({
+      results: [...this.state.results, {key, name}]
+    });
+  }
+
+  searchUsers = (name) => {
+    this.setState({
+      results: []
+    });
+
+    this.dataManager.searchUsers(name, this.addResult);
+  }
+
+  onClickUser = (item) => {
+    console.log(item);
   }
 
   centerMap = () => {
@@ -71,15 +86,40 @@ class Home extends React.Component {
   openMenu = () => {
     const { navigation } = this.props;
     navigation.navigate("Menu");
+    
+  handleChangeText = (text) => {
+    if (text == "") {
+      this.setState({ searchVisible: false });
+    } else {
+      this.setState({ searchVisible: true });
+      this.searchUsers(text);
+    }
+  }
+
+  handleOnPressResult = (item) => {
+    if (item.key) {
+      console.log(item);
+      const { navigation } = this.props;
+      navigation.navigate('Chat', {
+        otherId: item.key,
+      });
+    }
   }
 
   render() {
     const { navigation } = this.props;
+    const { searchVisible, results } = this.state;
+
     return (
       <View style={styles.container}>
-        <SearchButton />
+        <SearchButton onTextChange={this.handleChangeText} />
         <CurrentLocationButton centerMap={this.centerMap} />
         <MenuButton openMenu={this.openMenu} />
+        <SearchResult
+          visible={searchVisible}
+          results={results}
+          onPressResult={this.handleOnPressResult}
+        />
         <MapView
           initialRegion={this.state.region}
           showsUserLocation={true}
@@ -88,7 +128,12 @@ class Home extends React.Component {
           ref={(map) => { this.map = map }}
           style={styles.mapView}
         >
-
+          <Driver driver={{
+            uid: 'null', location: {
+              latitude: 44.85,
+              longitude: 24.8667
+            }
+          }} />
         </MapView>
       </View>
     );

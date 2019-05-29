@@ -12,7 +12,7 @@ class Login extends React.Component {
 
   dataManager = DataManager.getInstance();
 
-  componentDidMount = function() {
+  componentDidMount = function () {
   };
 
   handleLogin = async () => {

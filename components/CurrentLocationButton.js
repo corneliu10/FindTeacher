@@ -11,7 +11,6 @@ export const CurrentLocationButton = function (props) {
     const bottom = props.bottom ? props.bottom : 65;
 
     handleOnPress = () => {
-        console.log("CurrentLocationButton Pressed");
         centerMap();
     }
 
