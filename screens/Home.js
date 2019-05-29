@@ -4,9 +4,9 @@ import { MapView, Permissions, Location } from "expo";
 
 import SearchButton from "../components/SearchButton";
 import { CurrentLocationButton } from "../components/CurrentLocationButton";
+import { MenuButton } from "../components/MenuButton";
 import SearchResult from "../components/SearchResult";
 import Driver from "../components/Driver";
-
 import DataManager from "../utils/DataManager";
 import { MenuButton } from "../components/MenuButton";
 
@@ -98,6 +98,11 @@ class Home extends React.Component {
     });
   };
 
+  openMenu = () => {
+    const { navigation } = this.props;
+    navigation.navigate("Menu");
+  };
+
   handleChangeText = text => {
     if (text == "") {
       this.setState({ searchVisible: false });
@@ -130,6 +135,7 @@ class Home extends React.Component {
       <View style={styles.container}>
         <SearchButton onTextChange={this.handleChangeText} />
         <CurrentLocationButton centerMap={this.centerMap} />
+        <MenuButton openMenu={this.openMenu} />
         <SearchResult
           visible={searchVisible}
           results={results}
