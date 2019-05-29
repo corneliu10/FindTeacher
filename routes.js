@@ -1,6 +1,7 @@
 import {
     createStackNavigator,
     createAppContainer,
+    createDrawerNavigator
 } from 'react-navigation';
 
 import Login from './screens/Login';
@@ -9,6 +10,7 @@ import Home from './screens/Home';
 import Menu from './screens/Menu';
 import ProfileView from './screens/ProfileView';
 import EditProfileView from './screens/EditProfileView';
+import Chat from "./screens/Chat";
 
 const MainNavigator = createStackNavigator(
 {
@@ -30,6 +32,9 @@ const MainNavigator = createStackNavigator(
     EditProfileView: {
         screen: EditProfileView,
     },
+    Chat: {
+        screen: Chat
+    }
 },
 {
     initialRouteName: 'Login',
