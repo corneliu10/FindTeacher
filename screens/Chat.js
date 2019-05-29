@@ -75,6 +75,7 @@ export default class Chat extends React.Component {
 
     renderToolbar() {
         const { isInputFocused } = this.state;
+
         return (
             <View style={styles.toolbar}>
                 <ChatToolbar
@@ -94,10 +95,13 @@ export default class Chat extends React.Component {
 
     render() {
         const { messages } = this.state;
+        const name = this.props.navigation.getParam('name', 'John Mayer');
 
         return (
             <View style={styles.content}>
-                <View style={styles.header} />
+                <View style={styles.header}>
+                    <Text style={styles.headerText}>{name}</Text>
+                </View>
                 <KeyboardAvoidingView style={styles.content} behavior="padding" enabled>
                     <MessageList messages={messages} onPressMessage={this.handlePressMessage} />
                     {this.renderToolbar()}
@@ -113,10 +117,16 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     header: {
-        height: 40,
-        backgroundColor: 'red',
-        zIndex: 9,
-        borderBottomColor: 'blue',
-        borderBottomWidth: 1,
+        height: 70,
+        flexDirection: 'row',
+        backgroundColor: "#0197F6",
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderColor: 'white',
+        borderWidth: 1,
+        borderRadius: 10,
+    },
+    headerText: {
+        fontSize: 24
     }
 })

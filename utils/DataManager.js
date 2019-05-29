@@ -17,7 +17,9 @@ export default class DataManager {
 
     constructor() {
         // Initialize Firebase
-        firebase.initializeApp(this.firebaseConfig);
+        if (!firebase.apps.length) {
+            firebase.initializeApp(this.firebaseConfig);
+        }
     }
 
     static getInstance() {
@@ -100,19 +102,17 @@ export default class DataManager {
 
     searchUsers(userName, callback) {
         let path = "/user/";
-        if (userName.length <= 2) return;
 
         firebase.database().ref(path).once('value', (snapshot) => {
             if (snapshot.key) {
                 snapshot.forEach((child) => {
-                    const key = child.key;
-                    const { name } = child.val();
-                    
-                    if (name.toLowerCase().includes(userName.toLowerCase())) {
-                        // console.log(key);
-                        // console.log(name);
+                    if (child.val()) {
+                        const key = child.key;
+                        const { name } = child.val();
                         
-                        callback({ key, name });
+                        if (name && name.toLowerCase().includes(userName.toLowerCase())) {
+                            callback({ key, name });
+                        }
                     }
                 })
             }

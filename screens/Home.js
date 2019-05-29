@@ -16,7 +16,8 @@ export default class Register extends React.Component {
     this.state = {
       region: null,
       searchVisible: false,
-      results: []
+      results: [],
+      searchTimer: null
     }
 
     this.setLocationAsync()
@@ -45,9 +46,17 @@ export default class Register extends React.Component {
   }
 
   addResult = ({ key, name }) => {
-    this.setState({
-      results: [...this.state.results, {key, name}]
+    const { results } = this.state;
+    const found = results.find(r => {
+      if (r.key == key)
+        return true;
     });
+
+    if (!found) {
+      this.setState({
+        results: [...this.state.results, { key, name }]
+      });
+    }
   }
 
   searchUsers = (name) => {
@@ -55,11 +64,16 @@ export default class Register extends React.Component {
       results: []
     });
 
-    this.dataManager.searchUsers(name, this.addResult);
-  }
+    if (this.state.searchTimer) {
+      clearTimeout(this.state.searchTimer);
+    }
 
-  onClickUser = (item) => {
-    console.log(item);
+    this.setState({
+      searchTimer: setTimeout(() => {
+        this.dataManager.searchUsers(name, this.addResult);
+      }, 500)
+    });
+
   }
 
   centerMap = () => {
@@ -94,10 +108,10 @@ export default class Register extends React.Component {
 
   handleOnPressResult = (item) => {
     if (item.key) {
-      console.log(item);
       const { navigation } = this.props;
       navigation.navigate('Chat', {
         otherId: item.key,
+        name: item.name
       });
     }
   }

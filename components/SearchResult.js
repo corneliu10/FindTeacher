@@ -13,11 +13,11 @@ export default class SearchResult extends Component {
 
         return (
             <View key={item.key} style={{
-                justifyContent: 'center',
-                padding: 4,
+                height: 30,
+                width: (WIDTH - 52)
             }}>
-                <TouchableOpacity onPress={() => onPressResult(item)}>
-                    <Text>{item.name}</Text>
+                <TouchableOpacity onPress={() => onPressResult(item)} style={styles.button}>
+                    <Text style={styles.text}>{item.name}</Text>
                 </TouchableOpacity>
             </View>
         );
@@ -26,10 +26,11 @@ export default class SearchResult extends Component {
     render() {
         const { visible, results } = this.props;
 
-        if (visible) {
+        if (visible && results.length > 0) {
             return (
                 <View style={styles.container}>
                     <FlatList
+                        style={styles.list}
                         data={results}
                         renderItem={this.renderItem}
                         keyExtractor={keyExtractor}
@@ -45,15 +46,15 @@ export default class SearchResult extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        zIndex: 8,
+        zIndex: 1,
         position: 'absolute',
         width: (WIDTH - 40),
-        maxHeight: 100,
+        maxHeight: 200,
         top: 150,
         left: 20,
         borderRadius: 5,
         backgroundColor: 'white',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         shadowColor: '#000000',
         elevation: 7,
         shadowRadius: 5,
@@ -61,7 +62,17 @@ const styles = StyleSheet.create({
     },
     list: {
         flex: 1,
-        overflow: 'visible', // Prevents clipping on resize!
+        margin: 4
+    },
+    text: {
+        fontSize: 20,
+    },
+    button: {
+        marginLeft: 6,
+        marginRight: 6,
+        marginTop: 2,
+        borderBottomWidth: 1,
+        borderBottomColor: '#545454'
     }
 })
 
