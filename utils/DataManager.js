@@ -100,6 +100,27 @@ export default class DataManager {
         });
     }
 
+    searchUsers(userName, callback) {
+        let path = "/user/";
+        if (userName.length <= 2) return;
+
+        firebase.database().ref(path).once('value', (snapshot) => {
+            if (snapshot.key) {
+                snapshot.forEach((child) => {
+                    const key = child.key;
+                    const { name } = child.val();
+                    
+                    if (name.toLowerCase().includes(userName.toLowerCase())) {
+                        // console.log(key);
+                        // console.log(name);
+                        
+                        callback({ key, name });
+                    }
+                })
+            }
+        });
+    }
+
     removeListenerWith(otherId) {
         const path = "/user/" + this._userID + "/messages/" + otherId;
 
