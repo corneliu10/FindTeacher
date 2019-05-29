@@ -5,13 +5,14 @@ import { MaterialIcons } from "@expo/vector-icons";
 const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
 
-export const CurrentLocationButton = function (props) {
-    const centerMap = props.centerMap ?
-        props.centerMap : console.log("Callback function not provided!")
+export const MenuButton = function (props) {
+    const openMenu = props.openMenu ?
+    props.openMenu : console.log("Callback function not provided!")
     const bottom = props.bottom ? props.bottom : 65;
 
     handleOnPress = () => {
-        centerMap();
+        console.log("Menu Pressed");
+        openMenu();
     }
 
     return (
@@ -20,7 +21,7 @@ export const CurrentLocationButton = function (props) {
             onPress={handleOnPress}
         >
             <MaterialIcons
-                name="my-location"
+                name="menu"
                 color="#000000"
                 size={25}
             />
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
         width: 45,
         height: 45,
         backgroundColor: '#fff',
-        right: WIDTH - 70,
+        left: WIDTH - 70,
         borderRadius: 50,
         shadowColor: '#000000',
         elevation: 7,
