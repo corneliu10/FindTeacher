@@ -34,10 +34,8 @@ export default class DataManager {
      * @param name
      * @returns {firebase.Promise<any>|!firebase.Promise.<void>}
      */
-    setUserName(name) {
-        if (this._userID == null) return;
-
-        const userNamePath = "/user/" + this._userId;
+    setUserName(userId, name) {
+        const userNamePath = "/user/" + userId;
 
         console.log("add name to user " + userNamePath);
         return firebase.database().ref(userNamePath).set({
@@ -96,6 +94,27 @@ export default class DataManager {
                 const { text, sent } = snapshot.val()
 
                 callback({ text, sent, key });
+            }
+        });
+    }
+
+    searchUsers(userName, callback) {
+        let path = "/user/";
+        if (userName.length <= 2) return;
+
+        firebase.database().ref(path).once('value', (snapshot) => {
+            if (snapshot.key) {
+                snapshot.forEach((child) => {
+                    const key = child.key;
+                    const { name } = child.val();
+                    
+                    if (name.toLowerCase().includes(userName.toLowerCase())) {
+                        // console.log(key);
+                        // console.log(name);
+                        
+                        callback({ key, name });
+                    }
+                })
             }
         });
     }
