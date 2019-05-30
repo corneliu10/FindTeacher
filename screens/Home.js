@@ -153,10 +153,19 @@ class Home extends React.Component {
         >
           <Driver
             driver={{
-              uid: "null",
+              uid: "1",
               location: {
                 latitude: 44.85,
                 longitude: 24.8667
+              }
+            }}
+          />
+          <Driver
+            driver={{
+              uid: "2",
+              location: {
+                latitude: 44.43,
+                longitude: 26.1067
               }
             }}
           />
