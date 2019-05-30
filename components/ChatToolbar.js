@@ -5,10 +5,17 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Ionicons } from "@expo/vector-icons";
 
-const ToolbarButton = ({ title, onPress }) => (
+
+const ToolbarButton = ({  onPress }) => (
     <TouchableOpacity onPress={onPress}>
-        <Text style={styles.button}> {title}</Text>
+        <Ionicons
+              name="md-camera"
+              color="#e5e5e5"
+              size={25}
+              style={{ alignSelf: "center", paddingRight: 10 }}
+            />
     </TouchableOpacity>
 );
 
@@ -57,7 +64,7 @@ export default class ChatToolbar extends React.Component {
 
         return (
             <View style={styles.toolbar}>
-                <ToolbarButton title={'C'} onPress={onPressCamera} />
+                <ToolbarButton title={'a'} onPress={onPressCamera} />
                 <View style={styles.inputContainer}>
                     <TextInput 
                         style={styles.input}
