@@ -116,6 +116,16 @@ export default class DataManager {
         });
     }
 
+    getUserDetails(userId) {
+        let path = "/user/" + userId;
+
+        firebase.database().ref(path).once('value', (snapshot) => {
+            if (snapshot.key) {
+                console.log(snapshot.val());
+            }
+        });
+    }
+
     removeListenerWith(otherId) {
         const path = "/user/" + this._userID + "/messages/" + otherId;
 
