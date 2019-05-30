@@ -1,132 +1,155 @@
 import React, { Component } from "react";
 import {
-    View, Text, TouchableOpacity,
-    StyleSheet, KeyboardAvoidingView
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Dimensions
 } from "react-native";
 
-import MessageList from '../components/MessageList';
-import ChatToolbar from '../components/ChatToolbar';
-import LoginButton from '../components/LoginButton';
+import MessageList from "../components/MessageList";
+import ChatToolbar from "../components/ChatToolbar";
+import LoginButton from "../components/LoginButton";
+import Icon from "react-native-vector-icons/Ionicons";
+
+const WIDTH = Dimensions.get("window").width;
 
 import {
-    createImageMessage,
-    createLocationMessage,
-    createTextMessage
-} from '../utils/MessageUtils';
+  createImageMessage,
+  createLocationMessage,
+  createTextMessage
+} from "../utils/MessageUtils";
 import DataManager from "../utils/DataManager";
 
 export default class Chat extends React.Component {
-    state = {
-        messages: [
-            // createImageMessage('https://unsplash.it/300/300'),
-            // createTextMessage('World', true),
-        ],
-        isInputFocused: false,
-    };
+  state = {
+    messages: [
+      // createImageMessage('https://unsplash.it/300/300'),
+      // createTextMessage('World', true),
+    ],
+    isInputFocused: false
+  };
 
-    dataManager = DataManager.getInstance();
+  dataManager = DataManager.getInstance();
 
-    componentDidMount() {
-        const { navigation } = this.props;
-        const otherId = navigation.getParam('otherId', 'defaultid');
-        console.log(otherId);
+  componentDidMount() {
+    const { navigation } = this.props;
+    const otherId = navigation.getParam("otherId", "defaultid");
+    console.log(otherId);
 
-        this.getMessages(otherId);
-        this.dataManager.listenMessagesWith(otherId, this.addMessage);
+    this.getMessages(otherId);
+    this.dataManager.listenMessagesWith(otherId, this.addMessage);
+  }
+
+  componentWillUnmount() {
+    const { navigation } = this.props;
+    const otherId = navigation.getParam("otherId", "defaultid");
+
+    this.dataManager.removeListenerWith(otherId);
+  }
+
+  handlePressToolbarCamera = () => {
+    // ...
+  };
+
+  handleChangeFocus = isFocused => {
+    this.setState({ isInputFocused: isFocused });
+  };
+
+  handlePressMessage = () => {};
+
+  handleSubmit = text => {
+    const { navigation } = this.props;
+    const otherId = navigation.getParam("otherId", "defaultid");
+
+    this.dataManager.sentMessageTo(otherId, text);
+  };
+
+  addMessage = ({ text, sent, key }) => {
+    const found = this.state.messages.find(msg => {
+      if (msg.key == key) {
+        return true;
+      }
+    });
+
+    if (!found) {
+      this.setState({
+        messages: [createTextMessage(text, sent, key), ...this.state.messages]
+      });
     }
+  };
 
-    componentWillUnmount() {
-        const { navigation } = this.props;
-        const otherId = navigation.getParam('otherId', 'defaultid');
-        
-        this.dataManager.removeListenerWith(otherId);
-    }
+  renderToolbar() {
+    const { isInputFocused } = this.state;
 
-    handlePressToolbarCamera = () => {
-        // ...
-    }
+    return (
+      <View style={styles.toolbar}>
+        <ChatToolbar
+          isFocused={isInputFocused}
+          onSubmit={this.handleSubmit}
+          onChangeFocus={this.handleChangeFocus}
+          onPressCamera={this.handlePressToolbarCamera}
+          onPressLocation={this.handlePressToolbarLocation}
+        />
+      </View>
+    );
+  }
 
-    handleChangeFocus = (isFocused) => {
-        this.setState({ isInputFocused: isFocused });
-    };
+  getMessages = otherId => {
+    this.dataManager.getMessagesWith(otherId, this.addMessage);
+  };
 
-    handlePressMessage = () => { }
+  render() {
+    const { messages } = this.state;
+    const name = this.props.navigation.getParam("name", "John Mayer");
+    const { goBack } = this.props.navigation;
 
-    handleSubmit = (text) => {
-        const { navigation } = this.props;
-        const otherId = navigation.getParam('otherId', 'defaultid');
-        
-        this.dataManager.sentMessageTo(otherId, text);
-    }
-
-    addMessage = ({ text, sent, key }) => {
-        const found = this.state.messages.find((msg) => {
-            if (msg.key == key) {
-                return true;
-            }
-        })
-
-        if (!found) {
-            this.setState({
-                messages: [createTextMessage(text, sent, key), ...this.state.messages],
-            })
-        }
-    }
-
-    renderToolbar() {
-        const { isInputFocused } = this.state;
-
-        return (
-            <View style={styles.toolbar}>
-                <ChatToolbar
-                    isFocused={isInputFocused}
-                    onSubmit={this.handleSubmit}
-                    onChangeFocus={this.handleChangeFocus}
-                    onPressCamera={this.handlePressToolbarCamera}
-                    onPressLocation={this.handlePressToolbarLocation}
-                />
-            </View>
-        );
-    }
-
-    getMessages = (otherId) => {
-        this.dataManager.getMessagesWith(otherId, this.addMessage);
-    }
-
-    render() {
-        const { messages } = this.state;
-        const name = this.props.navigation.getParam('name', 'John Mayer');
-
-        return (
-            <View style={styles.content}>
-                <View style={styles.header}>
-                    <Text style={styles.headerText}>{name}</Text>
-                </View>
-                <KeyboardAvoidingView style={styles.content} behavior="padding" enabled>
-                    <MessageList messages={messages} onPressMessage={this.handlePressMessage} />
-                    {this.renderToolbar()}
-                </KeyboardAvoidingView>
-            </View>
-        );
-    };
+    return (
+      <View style={styles.content}>
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.backButton} onPress={() => goBack()}>
+            <Icon name="md-arrow-back" color="#fff" size={25} />
+          </TouchableOpacity>
+          <Text style={styles.headerText}>{name}</Text>
+          <TouchableOpacity >
+          </TouchableOpacity>
+        </View>
+        <KeyboardAvoidingView style={styles.content} behavior="padding" enabled>
+          <MessageList
+            messages={messages}
+            onPressMessage={this.handlePressMessage}
+          />
+          {this.renderToolbar()}
+        </KeyboardAvoidingView>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
-    content: {
-        flex: 1,
-        backgroundColor: 'white'
-    },
-    header: {
-        height: 70,
-        flexDirection: 'row',
-        backgroundColor: "#0197F6",
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderColor: 'white',
-        borderWidth: 1,
-        borderRadius: 10,
-    },
-    headerText: {
-        fontSize: 24
-    }
-})
+  content: {
+    flex: 1,
+    backgroundColor: "white"
+  },
+  header: {
+    height: 90,
+    flexDirection: "row",
+    backgroundColor: "#00BFFF",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: WIDTH
+  },
+  headerText: {
+    fontSize: 24,
+    color: "#fff",
+    paddingTop: 20
+  },
+  backButton: {
+    backgroundColor: "#00BFFF",
+    color: "white",
+    textAlign: "center",
+    paddingTop: 20,
+    paddingLeft: 20
+  },
+});
