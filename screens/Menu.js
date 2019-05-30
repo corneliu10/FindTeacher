@@ -5,9 +5,12 @@ import {
   Text,
   View,
   StyleSheet,
-  TouchableOpacity
+  TouchableOpacity,
+  Dimensions
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+
+const WIDTH = Dimensions.get("window").width;
 
 class Menu extends Component {
   constructor(props) {
@@ -30,8 +33,8 @@ class Menu extends Component {
   openProfile() {
     try {
       const { navigation } = this.props;
-      navigation.navigate('Home');
-    }catch (error) {
+      navigation.navigate("Home");
+    } catch (error) {
       console.log(error);
     }
   }
@@ -52,20 +55,59 @@ class Menu extends Component {
           </TouchableOpacity>
         </View>
         <ScrollView>
-          <View>
-            <View style={styles.navSectionStyle}>
-              <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-                <Text style={styles.navItemStyle}>Home</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate("ProfileView")}>
-                <Text style={styles.navItemStyle}>My profile</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate("ChatInbox")}>
-                <Text style={styles.navItemStyle}>Messages</Text>
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Text style={styles.navItemStyle}>Settings</Text>
-              </TouchableOpacity>
+          <View style={styles.scroll}>
+            <TouchableOpacity
+              style={styles.items}
+              onPress={() => navigation.navigate("Home")}
+            >
+              <Ionicons
+                name="md-home"
+                color="#fff"
+                size={25}
+                style={{ alignSelf: "center" }}
+              />
+              <Text style={styles.navItemStyle}>Home</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.items}
+              onPress={() => navigation.navigate("ProfileView")}
+            >
+              <Ionicons
+                name="md-person"
+                color="#fff"
+                size={25}
+                style={{ alignSelf: "center" }}
+              />
+              <Text style={styles.navItemStyle}>My profile</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.scroll}>
+            <TouchableOpacity style={styles.items}>
+              <Ionicons
+                name="md-settings"
+                color="#fff"
+                size={25}
+                style={{ alignSelf: "center" }}
+              />
+              <Text style={styles.navItemStyle}>Settings</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.items}
+              onPress={() => navigation.navigate("ChatInbox")}
+            >
+              <Ionicons
+                name="md-mail"
+                color="#fff"
+                size={25}
+                style={{ alignSelf: "center" }}
+              />
+              <Text style={styles.navItemStyle}>Messages</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.scroll}>
+            <View style={styles.items}>
+            </View>
+            <View style={styles.items}>
             </View>
           </View>
         </ScrollView>
@@ -98,10 +140,8 @@ const styles = StyleSheet.create({
     flex: 1
   },
   navItemStyle: {
-    padding: 10
-  },
-  navSectionStyle: {
-    backgroundColor: "lightgrey"
+    padding: 10,
+    color: "#fff"
   },
   sectionHeadingStyle: {
     paddingVertical: 10,
@@ -132,5 +172,18 @@ const styles = StyleSheet.create({
     color: "#000",
     textAlign: "center",
     padding: 15
+  },
+  scroll: {
+    flexDirection: "row",
+    width: WIDTH
+  },
+  items: {
+    width: WIDTH / 2,
+    height: WIDTH / 2,
+    backgroundColor: "#00bfff",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#e5e5e5"
   }
 });
