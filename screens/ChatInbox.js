@@ -1,18 +1,13 @@
 import React, { Component } from "react";
 import {
-    View, Text, TouchableOpacity,
+    View, Text, TouchableOpacity, Dimensions,
     StyleSheet, KeyboardAvoidingView, FlatList
 } from "react-native";
 
-import MessageList from '../components/MessageList';
-import ChatToolbar from '../components/ChatToolbar';
-import LoginButton from '../components/LoginButton';
+import Icon from "react-native-vector-icons/Ionicons";
 
-import {
-    createImageMessage,
-    createLocationMessage,
-    createTextMessage
-} from '../utils/MessageUtils';
+const WIDTH = Dimensions.get("window").width;
+
 import DataManager from "../utils/DataManager";
 
 const keyExtractor = item => item.key;
@@ -70,11 +65,16 @@ export default class ChatInbox extends React.Component {
     render() {
         const { inbox } = this.state;
         const name = "Chat Inbox";
+        const { goBack } = this.props.navigation;
 
         return (
             <View style={styles.content}>
                 <View style={styles.header}>
+                    <TouchableOpacity style={styles.backButton} onPress={() => goBack()}>
+                        <Icon name="md-arrow-back" color="#fff" size={25} />
+                    </TouchableOpacity>
                     <Text style={styles.headerText}>{name}</Text>
+                    <View></View>
                 </View>
                 <FlatList
                     data={inbox}
@@ -93,17 +93,18 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     header: {
-        height: 70,
-        flexDirection: 'row',
-        backgroundColor: "#0197F6",
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderColor: 'white',
-        borderWidth: 1,
-        borderRadius: 10,
+        height: 90,
+        zIndex: 10,
+        flexDirection: "row",
+        backgroundColor: "#00BFFF",
+        alignItems: "center",
+        justifyContent: "space-between",
+        width: WIDTH
     },
     headerText: {
-        fontSize: 24
+        fontSize: 24,
+        color: "#fff",
+        paddingTop: 20
     },
     text: {
         fontSize: 26,
@@ -114,5 +115,12 @@ const styles = StyleSheet.create({
         marginTop: 2,
         borderBottomWidth: 1,
         borderBottomColor: '#545454'
-    }
+    },
+    backButton: {
+        backgroundColor: "#00BFFF",
+        color: "white",
+        textAlign: "center",
+        paddingTop: 20,
+        paddingLeft: 20
+    },
 })

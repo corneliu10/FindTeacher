@@ -112,8 +112,8 @@ export default class Chat extends React.Component {
             <Icon name="md-arrow-back" color="#fff" size={25} />
           </TouchableOpacity>
           <Text style={styles.headerText}>{name}</Text>
-          <TouchableOpacity >
-          </TouchableOpacity>
+          <View >
+          </View>
         </View>
         <KeyboardAvoidingView style={styles.content} behavior="padding" enabled>
           <MessageList
@@ -134,6 +134,7 @@ const styles = StyleSheet.create({
   },
   header: {
     height: 90,
+    zIndex: 10,
     flexDirection: "row",
     backgroundColor: "#00BFFF",
     alignItems: "center",
