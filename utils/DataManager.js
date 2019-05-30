@@ -137,8 +137,10 @@ export default class DataManager {
 
         firebase.database().ref(path).once('value', (snapshot) => {
             if (snapshot.key) {
-                const { email, isTeacher, name, course } = snapshot.val();
-                callback({ email, isTeacher, name, course });
+                if (snapshot.val()) {
+                    const { email, isTeacher, name, course } = snapshot.val();
+                    callback({ email, isTeacher, name, course });
+                }
             }
         });
     }
