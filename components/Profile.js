@@ -29,9 +29,9 @@ export default class Profile extends React.Component {
               electram expetendis, omittam deseruisse consequuntur ius an,
             </Text>
 
-            {/* <TouchableOpacity style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.buttonContainer}>
               <Text style={styles.buttonText}>Message</Text>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
             {/* <TouchableOpacity style={styles.buttonContainer}>
               <Text style={styles.buttonText}>See More</Text>
             </TouchableOpacity>

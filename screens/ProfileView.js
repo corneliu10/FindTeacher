@@ -29,12 +29,6 @@ export default class ProfileView extends React.Component {
           >
             <Icon name="md-arrow-back" color="#fff" size={25} />
           </TouchableOpacity>
-          <TouchableOpacity 
-            style={styles.editButton}
-            onPress={() => navigation.navigate("EditProfile")}
-          >
-            <Icon name="md-create" color="#fff" size={25} />
-          </TouchableOpacity>
         </View>
         <Profile />
       </View>
