@@ -91,8 +91,18 @@ class Menu extends Component {
               />
               <Text style={styles.navItemStyle}>Settings</Text>
             </TouchableOpacity>
-            <View style={styles.items}>
-            </View>
+            <TouchableOpacity
+              style={styles.items}
+              onPress={() => navigation.navigate("ChatInbox")}
+            >
+              <Ionicons
+                name="md-mail"
+                color="#fff"
+                size={25}
+                style={{ alignSelf: "center" }}
+              />
+              <Text style={styles.navItemStyle}>Messages</Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.scroll}>
             <View style={styles.items}>
