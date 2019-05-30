@@ -11,14 +11,15 @@ export default class Register extends React.Component {
     name: "aba",
     email: "b@c.com",
     password: "123456",
-    isTeacher: false
+    isTeacher: false,
+    course: null
   };
 
   dataManager = DataManager.getInstance();
 
   handleRegister = async () => {
     const { navigation } = this.props;
-    const { name, email, password, isTeacher } = this.state;
+    const { name, email, password, isTeacher, course } = this.state;
     const firebase = this.dataManager.getFirebase();
 
     if (name != "" && email != "" && password != "") {
@@ -26,9 +27,8 @@ export default class Register extends React.Component {
         var authJson = await firebase
           .auth()
           .createUserWithEmailAndPassword(email, password);
-        var uid = authJson["user"]["uid"];
-        console.log("register: " + uid);
-        this.dataManager.setUserDetails(uid, email, name, isTeacher)
+        const uid = authJson["user"]["uid"];
+        this.dataManager.setUserDetails(uid, email, name, isTeacher, course);
 
         alert("Account created");
         navigation.goBack();
@@ -76,6 +76,14 @@ export default class Register extends React.Component {
             placeholder={"Password"}
             secureTextEntry={true}
           />
+          {isTeacher (
+            <TextInput
+              style={styles.textInput}
+              onChangeText={course => this.setState({ course })}
+              value={this.state.course}
+              placeholder={"Course"}
+            />
+          )}
           <View style={styles.toggleButton}>
             <ToggleSwitch
               isOn={isTeacher}
