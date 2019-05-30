@@ -47,7 +47,7 @@ class Home extends React.Component {
     this.setState({ region });
   };
 
-  addResult = ({ key, name }) => {
+  addResult = ({ key, name, course }) => {
     const { results } = this.state;
     const found = results.find(r => {
       if (r.key == key) return true;
@@ -55,7 +55,7 @@ class Home extends React.Component {
 
     if (!found) {
       this.setState({
-        results: [...this.state.results, { key, name }]
+        results: [...this.state.results, { key, name, course }]
       });
     }
   };

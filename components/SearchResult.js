@@ -10,14 +10,14 @@ const keyExtractor = item => item.key;
 export default class SearchResult extends Component {
     renderItem = ({ item }) => {
         const { onPressResult } = this.props;
-
+        const courseText = item.course ? "- " + item.course : ""; 
         return (
             <View key={item.key} style={{
                 height: 30,
                 width: (WIDTH - 52)
             }}>
                 <TouchableOpacity onPress={() => onPressResult(item)} style={styles.button}>
-                    <Text style={styles.text}>{item.name}</Text>
+                    <Text style={styles.text}>{item.name} {courseText}</Text>
                 </TouchableOpacity>
             </View>
         );
