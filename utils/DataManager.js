@@ -105,7 +105,7 @@ export default class DataManager {
                     if (child.val()) {
                         const key = child.key;
                         const { name, course } = child.val();
-                        
+
                         if ((name && name.toLowerCase().includes(search.toLowerCase())) ||
                             (course && course.toLowerCase().includes(search.toLowerCase()))) {
                             callback({ key, name, course });
@@ -116,12 +116,29 @@ export default class DataManager {
         });
     }
 
-    getUserDetails(userId) {
+    getInbox(callback) {
+        let path = "/user/" + this._userID + "/messages/";
+
+        firebase.database().ref(path).once('value', (snapshot) => {
+            snapshot.forEach((child) => {
+
+                this.getUserDetails(child.key, ({ name }) => {
+                    // console.log(child.key);
+                    // console.log(name);
+                    const key = child.key;
+                    callback({ key, name });
+                });
+            })
+        })
+    }
+
+    getUserDetails(userId, callback) {
         let path = "/user/" + userId;
 
         firebase.database().ref(path).once('value', (snapshot) => {
             if (snapshot.key) {
-                console.log(snapshot.val());
+                const { email, isTeacher, name, course } = snapshot.val();
+                callback({ email, isTeacher, name, course });
             }
         });
     }
