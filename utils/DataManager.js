@@ -30,13 +30,14 @@ export default class DataManager {
         return DataManager.instance;
     }
 
-    setUserDetails(userId, email, name, isTeacher) {
+    setUserDetails(userId, email, name, isTeacher, course) {
         const userPath = "/user/" + userId;
 
         return firebase.database().ref(userPath).set({
             email: email,
             name: name,
-            isTeacher: isTeacher
+            isTeacher: isTeacher,
+            course: course
         });
     }
 
@@ -95,7 +96,7 @@ export default class DataManager {
         });
     }
 
-    searchUsers(userName, callback) {
+    searchUsers(search, callback) {
         let path = "/user/";
 
         firebase.database().ref(path).once('value', (snapshot) => {
@@ -103,10 +104,11 @@ export default class DataManager {
                 snapshot.forEach((child) => {
                     if (child.val()) {
                         const key = child.key;
-                        const { name } = child.val();
+                        const { name, course } = child.val();
                         
-                        if (name && name.toLowerCase().includes(userName.toLowerCase())) {
-                            callback({ key, name });
+                        if ((name && name.toLowerCase().includes(search.toLowerCase())) ||
+                            (course && course.toLowerCase().includes(search.toLowerCase()))) {
+                            callback({ key, name, course });
                         }
                     }
                 })
