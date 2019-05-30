@@ -60,6 +60,9 @@ class Menu extends Component {
               <TouchableOpacity onPress={() => navigation.navigate("ProfileView")}>
                 <Text style={styles.navItemStyle}>My profile</Text>
               </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate("ChatInbox")}>
+                <Text style={styles.navItemStyle}>Messages</Text>
+              </TouchableOpacity>
               <TouchableOpacity>
                 <Text style={styles.navItemStyle}>Settings</Text>
               </TouchableOpacity>

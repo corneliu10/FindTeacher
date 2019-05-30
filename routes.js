@@ -11,6 +11,7 @@ import Menu from './screens/Menu';
 import ProfileView from './screens/ProfileView';
 import EditProfileView from './screens/EditProfileView';
 import Chat from "./screens/Chat";
+import ChatInbox from "./screens/ChatInbox";
 
 const MainNavigator = createStackNavigator(
 {
@@ -34,6 +35,9 @@ const MainNavigator = createStackNavigator(
     },
     Chat: {
         screen: Chat
+    },
+    ChatInbox: {
+        screen: ChatInbox
     },
     Menu: {
         screen: Menu

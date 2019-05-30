@@ -22,7 +22,7 @@ export default class Register extends React.Component {
     const { name, email, password, isTeacher, course } = this.state;
     const firebase = this.dataManager.getFirebase();
 
-    if (name != "" && email != "" && password != "") {
+    if (name != "" && email != "" && password != "" && course != "") {
       try {
         var authJson = await firebase
           .auth()
@@ -76,14 +76,14 @@ export default class Register extends React.Component {
             placeholder={"Password"}
             secureTextEntry={true}
           />
-          {isTeacher (
+          {isTeacher ? (
             <TextInput
               style={styles.textInput}
               onChangeText={course => this.setState({ course })}
               value={this.state.course}
               placeholder={"Course"}
             />
-          )}
+          ) : (<View></View>)}
           <View style={styles.toggleButton}>
             <ToggleSwitch
               isOn={isTeacher}
