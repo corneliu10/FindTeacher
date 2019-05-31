@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import {
     View, Text, TouchableOpacity, Dimensions,
-    StyleSheet, KeyboardAvoidingView, FlatList
+    StyleSheet, KeyboardAvoidingView, FlatList,
+    StatusBar
 } from "react-native";
 
 import Icon from "react-native-vector-icons/Ionicons";
@@ -25,7 +26,7 @@ export default class ChatInbox extends React.Component {
         this.dataManager.getInbox(this.addInbox);
     }
 
-    addInbox = ({ key, name }) => {
+    addInbox = ({ key, name, isTeacher }) => {
         const found = this.state.inbox.find((msg) => {
             if (msg.key == key) {
                 return true;
@@ -34,15 +35,13 @@ export default class ChatInbox extends React.Component {
 
         if (!found) {
             this.setState({
-                inbox: [{ key, name }, ...this.state.inbox],
+                inbox: [{ key, name, isTeacher }, ...this.state.inbox],
             })
         }
     }
 
     onPressResult = (item) => {
-        console.log(item);
         const { name, key } = item;
-        console.log({ name, key });
         const { navigation } = this.props;
         navigation.navigate("Chat", {
             otherId: key,
@@ -51,12 +50,16 @@ export default class ChatInbox extends React.Component {
     }
 
     renderItem = ({ item }) => {
-        console.log("render: " + item);
         return (
-            <View key={item.key} style={{
-            }}>
-                <TouchableOpacity onPress={() => this.onPressResult(item)} style={styles.button}>
-                    <Text style={styles.text}>{item.name}</Text>
+            <View key={item.key} style={styles.listItem}>
+                <TouchableOpacity onPress={() => this.onPressResult(item)} style={styles.listItemButton}>
+                    <Icon name="md-person" color="#00BFFF" size={30} style={{ marginLeft: 4 }} />
+                    <View style={{ marginLeft: 13 }}>
+                        <Text style={styles.listItemText}>{item.name}</Text>
+                        {item.isTeacher ?
+                            <Text style={{ fontSize: 12, color: '#808080' }}>Teacher</Text> : (<View></View>)
+                        }
+                    </View>
                 </TouchableOpacity>
             </View>
         );
@@ -69,12 +72,12 @@ export default class ChatInbox extends React.Component {
 
         return (
             <View style={styles.content}>
+                <StatusBar barStyle='light-content' />
                 <View style={styles.header}>
                     <TouchableOpacity style={styles.backButton} onPress={() => goBack()}>
                         <Icon name="md-arrow-back" color="#fff" size={25} />
                     </TouchableOpacity>
                     <Text style={styles.headerText}>{name}</Text>
-                    <View></View>
                 </View>
                 <FlatList
                     data={inbox}
@@ -90,7 +93,7 @@ export default class ChatInbox extends React.Component {
 const styles = StyleSheet.create({
     content: {
         flex: 1,
-        backgroundColor: 'white'
+        backgroundColor: '#E8E8E8'
     },
     header: {
         height: 90,
@@ -98,29 +101,35 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         backgroundColor: "#00BFFF",
         alignItems: "center",
-        justifyContent: "space-between",
+        justifyContent: "center",
         width: WIDTH
     },
     headerText: {
-        fontSize: 24,
+        fontSize: 25,
         color: "#fff",
-        paddingTop: 20
+        paddingTop: 18
     },
-    text: {
-        fontSize: 26,
-    },
-    button: {
-        marginLeft: 6,
-        marginRight: 6,
-        marginTop: 2,
-        borderBottomWidth: 1,
-        borderBottomColor: '#545454'
+    listItemText: {
+        fontSize: 20,
+        color: '#00BFFF',
     },
     backButton: {
+        position: 'absolute',
         backgroundColor: "#00BFFF",
         color: "white",
         textAlign: "center",
         paddingTop: 20,
-        paddingLeft: 20
+        left: 20
     },
+    listItem: {
+        padding: 4,
+        marginTop: 4,
+        backgroundColor: 'white',
+        borderWidth: 3,
+        borderColor: "#fff",
+    },
+    listItemButton: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    }
 })
