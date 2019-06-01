@@ -12,6 +12,7 @@ import EditProfileView from './screens/EditProfileView';
 import Chat from "./screens/Chat";
 import ChatInbox from "./screens/ChatInbox";
 import Menu from './screens/Menu';
+import Settings from './screens/Settings';
 
 const MainNavigator = createStackNavigator(
 {
@@ -48,6 +49,9 @@ const MainNavigator = createStackNavigator(
     EditProfileView: {
         screen: EditProfileView,
     },
+    Settings: {
+        screen: Settings
+    }
 },
 {
     initialRouteName: 'Login',

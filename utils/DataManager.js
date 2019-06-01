@@ -132,7 +132,7 @@ export default class DataManager {
 
         firebase.database().ref(path).once('value', (snapshot) => {
             snapshot.forEach((child) => {
-                this.getUserDetails(child.key, ({ name,  isTeacher }) => {
+                this.getUserDetails(child.key, ({ name, isTeacher }) => {
                     const key = child.key;
                     callback({ key, name, isTeacher });
                 });
@@ -146,8 +146,13 @@ export default class DataManager {
         firebase.database().ref(path).once('value', (snapshot) => {
             if (snapshot.key) {
                 if (snapshot.val()) {
-                    const { email, isTeacher, name, course, location } = snapshot.val();
-                    callback({ email, isTeacher, name, course, location });
+                    const { email, isTeacher, name, course, location, shareLocation } = snapshot.val();
+                    callback({
+                        key: snapshot.key,
+                        email, isTeacher,
+                        name, course,
+                        location, shareLocation
+                    });
                 }
             }
         });
@@ -165,6 +170,25 @@ export default class DataManager {
                     }
                 }
             })
+        });
+    }
+
+    updateUserDetails(userId, info) {
+        const userPath = "/user/" + userId;
+        let name = '', email = '', course = '', 
+            details = '', isTeacher=false, shareLocation=false;
+
+        if (info.name) name = info.name;
+        if (info.email) email = info.email;
+        if (info.course) course = info.course;
+        if (info.details) details = info.details;
+        if (info.isTeacher) isTeacher = info.isTeacher;
+        if (info.shareLocation) shareLocation = info.shareLocation;
+
+        return firebase.database().ref(userPath).update({
+            name, email, course,
+            details, isTeacher,
+            shareLocation
         });
     }
 
