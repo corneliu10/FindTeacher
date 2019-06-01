@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { MessageShape } from '../utils/MessageUtils';
+import { MessageShape } from '../../utils/MessageUtils';
 import {
     FlatList,
     StyleSheet,

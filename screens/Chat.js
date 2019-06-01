@@ -8,9 +8,8 @@ import {
   Dimensions, StatusBar
 } from "react-native";
 
-import MessageList from "../components/MessageList";
-import ChatToolbar from "../components/ChatToolbar";
-import LoginButton from "../components/LoginButton";
+import MessageList from "../components/chat/MessageList";
+import ChatToolbar from "../components/chat/ChatToolbar";
 import Icon from "react-native-vector-icons/Ionicons";
 
 const WIDTH = Dimensions.get("window").width;
