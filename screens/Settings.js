@@ -17,6 +17,7 @@ export default class Settings extends Component {
     email: '',
     course: '',
     details: '',
+    location: null,
     isTeacher: false,
     shareLocation: false,
   }
@@ -25,12 +26,12 @@ export default class Settings extends Component {
 
   componentDidMount() {
     this.dataManager.getUserDetails(this.dataManager.getUserID(), (item) => {
-      const { key, name, email, course, details, isTeacher, shareLocation } = item;
+      const { key, name, email, course, details, isTeacher, shareLocation, location } = item;
       this.setState({
         key, name,
         email, course,
         details, isTeacher,
-        shareLocation
+        shareLocation, location
       });
     });
   }
@@ -38,6 +39,7 @@ export default class Settings extends Component {
   saveSettings = () => {
     if (this.state.key && this.state.name != '' && this.state.email != '') {
       this.dataManager.updateUserDetails(this.dataManager.getUserID(), this.state);
+      alert("Settings saved!");
     }
   }
 
@@ -118,7 +120,12 @@ export default class Settings extends Component {
             label="Share your location: "
             labelStyle={{ color: "#00BFFF", fontWeight: "bold" }}
             onToggle={isOn => {
-              this.setState({ shareLocation: isOn });
+              var location = null;
+              if (isOn) {
+                location = this.dataManager.getLocation();
+              }
+
+              this.setState({ shareLocation: isOn, location });
             }}
           />
         </View>
