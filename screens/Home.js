@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import { View, StatusBar, Button, StyleSheet } from "react-native";
 import { MapView, Permissions, Location } from "expo";
 
 import SearchButton from "../components/SearchButton";
 import { CurrentLocationButton } from "../components/CurrentLocationButton";
 import { MenuButton } from "../components/MenuButton";
 import SearchResult from "../components/SearchResult";
-import Driver from "../components/Driver";
+import TeacherMarker from "../components/TeacherMarker";
 import DataManager from "../utils/DataManager";
 
 class Home extends React.Component {
@@ -17,7 +17,8 @@ class Home extends React.Component {
       region: null,
       searchVisible: false,
       results: [],
-      searchTimer: null
+      searchTimer: null,
+      teachers: []
     };
 
     this.setLocationAsync();
@@ -25,8 +26,8 @@ class Home extends React.Component {
 
   dataManager = DataManager.getInstance();
 
-  componentDidMount = function() {
-    const { navigation } = this.props;
+  componentDidMount = function () {
+    this.dataManager.getUsersDetails(this.addTeacher);
   };
 
   setLocationAsync = async () => {
@@ -37,6 +38,7 @@ class Home extends React.Component {
     const location = await Location.getCurrentPositionAsync({
       enableHighAccuracy: true
     });
+
     const region = {
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
@@ -44,8 +46,25 @@ class Home extends React.Component {
       longitudeDelta: 0.045
     };
 
+    this.dataManager.setLocation({
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude
+    });
     this.setState({ region });
   };
+
+  addTeacher = ({ key, name, course, details, location }) => {
+    const { teachers } = this.state;
+    const found = teachers.find(t => {
+      if (t.key == key) return true;
+    });
+
+    if (!found) {
+      this.setState({
+        teachers: [...teachers, { key, name, course, details, location }]
+      })
+    }
+  }
 
   addResult = ({ key, name, course }) => {
     const { results } = this.state;
@@ -126,12 +145,27 @@ class Home extends React.Component {
     navigation.navigate("Menu");
   };
 
+  renderTeacher = () => {
+    return this.state.teachers.filter(t => t.location)
+      .map(({ key, name, course, location }) => (
+        <TeacherMarker
+          key={key}
+          teacherKey={key}
+          name={name}
+          course={course}
+          location={location}
+          onPressMarker={this.handleOnPressResult}
+        />
+      ));
+  }
+
   render() {
     const { navigation } = this.props;
     const { searchVisible, results } = this.state;
 
     return (
       <View style={styles.container}>
+        <StatusBar barStyle='dark-content' />
         <SearchButton onTextChange={this.handleChangeText} />
         <CurrentLocationButton centerMap={this.centerMap} />
         <MenuButton openMenu={this.openMenu} />
@@ -151,15 +185,7 @@ class Home extends React.Component {
           }}
           style={styles.mapView}
         >
-          <Driver
-            driver={{
-              uid: "null",
-              location: {
-                latitude: 44.85,
-                longitude: 24.8667
-              }
-            }}
-          />
+          {this.renderTeacher()}
         </MapView>
       </View>
     );

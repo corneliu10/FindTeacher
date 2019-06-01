@@ -41,6 +41,17 @@ export default class DataManager {
         });
     }
 
+    setLocation({ latitude, longitude }) {
+        const userPath = "/user/" + this._userID;
+
+        return firebase.database().ref(userPath).update({
+            location: {
+                latitude,
+                longitude
+            }
+        });
+    }
+
     sentMessageTo(receiverUserId, item) {
         if (!this._userID || !receiverUserId) return;
 
@@ -121,12 +132,9 @@ export default class DataManager {
 
         firebase.database().ref(path).once('value', (snapshot) => {
             snapshot.forEach((child) => {
-
-                this.getUserDetails(child.key, ({ name }) => {
-                    // console.log(child.key);
-                    // console.log(name);
+                this.getUserDetails(child.key, ({ name,  isTeacher }) => {
                     const key = child.key;
-                    callback({ key, name });
+                    callback({ key, name, isTeacher });
                 });
             })
         })
@@ -138,10 +146,25 @@ export default class DataManager {
         firebase.database().ref(path).once('value', (snapshot) => {
             if (snapshot.key) {
                 if (snapshot.val()) {
-                    const { email, isTeacher, name, course } = snapshot.val();
-                    callback({ email, isTeacher, name, course });
+                    const { email, isTeacher, name, course, location } = snapshot.val();
+                    callback({ email, isTeacher, name, course, location });
                 }
             }
+        });
+    }
+
+    getUsersDetails(callback) {
+        const path = "/user/";
+
+        firebase.database().ref(path).once('value', (snapshot) => {
+            snapshot.forEach((child) => {
+                if (child.key) {
+                    if (child.val()) {
+                        const { email, isTeacher, name, course, location } = child.val();
+                        callback({ key: child.key, email, isTeacher, name, course, location });
+                    }
+                }
+            })
         });
     }
 

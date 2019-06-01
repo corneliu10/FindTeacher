@@ -1,5 +1,8 @@
 import React from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import {
+  View, Text, StatusBar,
+  TextInput, StyleSheet
+} from "react-native";
 
 import LoginButton from "../components/LoginButton";
 import DataManager from "../utils/DataManager";
@@ -46,6 +49,7 @@ export default class Login extends React.Component {
     const { navigation } = this.props;
     return (
       <View style={styles.container}>
+        <StatusBar barStyle='light-content' />
         <View style={styles.loginContainer}>
           <View style={styles.title}>
             <Text>

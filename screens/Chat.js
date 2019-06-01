@@ -5,12 +5,11 @@ import {
   TouchableOpacity,
   StyleSheet,
   KeyboardAvoidingView,
-  Dimensions
+  Dimensions, StatusBar
 } from "react-native";
 
-import MessageList from "../components/MessageList";
-import ChatToolbar from "../components/ChatToolbar";
-import LoginButton from "../components/LoginButton";
+import MessageList from "../components/chat/MessageList";
+import ChatToolbar from "../components/chat/ChatToolbar";
 import Icon from "react-native-vector-icons/Ionicons";
 
 const WIDTH = Dimensions.get("window").width;
@@ -107,13 +106,12 @@ export default class Chat extends React.Component {
 
     return (
       <View style={styles.content}>
+        <StatusBar barStyle='light-content' />
         <View style={styles.header}>
+          <Text style={styles.headerText}>{name}</Text>
           <TouchableOpacity style={styles.backButton} onPress={() => goBack()}>
             <Icon name="md-arrow-back" color="#fff" size={25} />
           </TouchableOpacity>
-          <Text style={styles.headerText}>{name}</Text>
-          <View >
-          </View>
         </View>
         <KeyboardAvoidingView style={styles.content} behavior="padding" enabled>
           <MessageList
@@ -138,19 +136,20 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "#00BFFF",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "center",
     width: WIDTH
   },
   headerText: {
-    fontSize: 24,
+    fontSize: 25,
     color: "#fff",
-    paddingTop: 20
+    paddingTop: 18
   },
   backButton: {
+    position: 'absolute',
     backgroundColor: "#00BFFF",
     color: "white",
     textAlign: "center",
     paddingTop: 20,
-    paddingLeft: 20
+    left: 20
   },
 });
