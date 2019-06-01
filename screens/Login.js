@@ -10,7 +10,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 export default class Login extends React.Component {
   state = {
-    email: "a@a.com",
+    email: "corneliu.dcv@gmail.com",
     password: "123456",
   };
 

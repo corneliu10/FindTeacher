@@ -9,12 +9,13 @@ import { MapView } from 'expo';
 export default class TeacherMarker extends Component {
     constructor(props) {
         super(props);
-        const { teacherKey, location, name, course } = this.props;
+        const { teacherKey, location, name, course, details } = this.props;
 
         this.state = {
             key: teacherKey,
-            name: name,
-            course: course,
+            name,
+            course,
+            details,
             latitude: location.latitude,
             longitude: location.longitude
         }
@@ -22,7 +23,7 @@ export default class TeacherMarker extends Component {
 
     render() {
         const { onPressMarker } = this.props;
-        const { latitude, longitude, name, key, course } = this.state;
+        const { latitude, longitude, name, key, course, details } = this.state;
 
         return (
             <MapView.Marker
@@ -50,7 +51,7 @@ export default class TeacherMarker extends Component {
                             Course: {course}
                         </Text>
                         <Text style={{ fontSize: 20, color: 'green' }}>
-                            Details:
+                            Details: {details}
                         </Text>
                     </View>
                 </MapView.Callout>

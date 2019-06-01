@@ -28,6 +28,7 @@ class Home extends React.Component {
 
   componentDidMount = function () {
     this.dataManager.getUsersDetails(this.addTeacher);
+    this.dataManager.listenUsersChange(this.addTeacher);
   };
 
   setLocationAsync = async () => {
@@ -53,16 +54,32 @@ class Home extends React.Component {
     this.setState({ region });
   };
 
-  addTeacher = ({ key, name, course, details, location }) => {
-    const { teachers } = this.state;
-    const found = teachers.find(t => {
+  addTeacher = ({ key, isTeacher, name, course, details, location, shareLocation }) => {
+    var teachers = this.dataManager.getData('teachers');
+    if (!teachers) {
+      teachers = [];
+    }
+
+    const foundIndex = teachers.findIndex(t => {
       if (t.key == key) return true;
     });
 
-    if (!found) {
+    if (foundIndex == -1 && shareLocation && isTeacher) {
       this.setState({
-        teachers: [...teachers, { key, name, course, details, location }]
+        teachers: [...teachers, { key, isTeacher, name, course, details, location, shareLocation }]
       })
+      this.dataManager.storeData('teachers', [...teachers, { key, isTeacher, name, course, details, location, shareLocation }]);
+    } else if (foundIndex != -1) {
+      if (!isTeacher || !shareLocation) {
+        teachers.splice(foundIndex, 1);
+      } else {
+        teachers[foundIndex] = { key, isTeacher, name, course, details, location, shareLocation };
+      }
+
+      this.setState({
+        teachers: [...teachers]
+      });
+      this.dataManager.storeData('teachers', [...teachers]);
     }
   }
 
@@ -147,11 +164,12 @@ class Home extends React.Component {
 
   renderTeacher = () => {
     return this.state.teachers.filter(t => t.location)
-      .map(({ key, name, course, location }) => (
+      .map(({ key, name, course, details, location }) => (
         <TeacherMarker
           key={key}
           teacherKey={key}
           name={name}
+          details={details}
           course={course}
           location={location}
           onPressMarker={this.handleOnPressResult}

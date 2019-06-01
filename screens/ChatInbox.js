@@ -4,7 +4,6 @@ import {
     StyleSheet, KeyboardAvoidingView, FlatList,
     StatusBar
 } from "react-native";
-
 import Icon from "react-native-vector-icons/Ionicons";
 
 const WIDTH = Dimensions.get("window").width;

@@ -82,7 +82,10 @@ class Menu extends Component {
             </TouchableOpacity>
           </View>
           <View style={styles.scroll}>
-            <TouchableOpacity style={styles.items}>
+            <TouchableOpacity
+              style={styles.items}
+              onPress={() => navigation.navigate("Settings")}
+            >
               <Ionicons
                 name="md-settings"
                 color="#fff"

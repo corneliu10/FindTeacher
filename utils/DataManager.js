@@ -15,10 +15,32 @@ export default class DataManager {
 
     _userID = null;
 
+    _location = null;
+
+    storage = {};
+
     constructor() {
         // Initialize Firebase
         if (!firebase.apps.length) {
             firebase.initializeApp(this.firebaseConfig);
+        }
+    }
+
+    storeData = (key, data) => {
+        try {
+            this.storage[key] = data;
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    getData = (key) => {
+        try {
+            const value = this.storage[key];
+            return value;
+        } catch (e) {
+            console.log(e);
+            return null;
         }
     }
 
@@ -38,17 +60,6 @@ export default class DataManager {
             name: name,
             isTeacher: isTeacher,
             course: course
-        });
-    }
-
-    setLocation({ latitude, longitude }) {
-        const userPath = "/user/" + this._userID;
-
-        return firebase.database().ref(userPath).update({
-            location: {
-                latitude,
-                longitude
-            }
         });
     }
 
@@ -132,7 +143,7 @@ export default class DataManager {
 
         firebase.database().ref(path).once('value', (snapshot) => {
             snapshot.forEach((child) => {
-                this.getUserDetails(child.key, ({ name,  isTeacher }) => {
+                this.getUserDetails(child.key, ({ name, isTeacher }) => {
                     const key = child.key;
                     callback({ key, name, isTeacher });
                 });
@@ -146,8 +157,13 @@ export default class DataManager {
         firebase.database().ref(path).once('value', (snapshot) => {
             if (snapshot.key) {
                 if (snapshot.val()) {
-                    const { email, isTeacher, name, course, location } = snapshot.val();
-                    callback({ email, isTeacher, name, course, location });
+                    const { email, isTeacher, name, course, details, location, shareLocation } = snapshot.val();
+                    callback({
+                        key: snapshot.key,
+                        email, isTeacher,
+                        name, course, details,
+                        location, shareLocation
+                    });
                 }
             }
         });
@@ -160,11 +176,45 @@ export default class DataManager {
             snapshot.forEach((child) => {
                 if (child.key) {
                     if (child.val()) {
-                        const { email, isTeacher, name, course, location } = child.val();
-                        callback({ key: child.key, email, isTeacher, name, course, location });
+                        const { email, isTeacher, name, course, details, location, shareLocation } = child.val();
+                        callback({
+                            key: child.key, email, isTeacher,
+                            name, details, course, location, shareLocation
+                        });
                     }
                 }
             })
+        })
+    }
+
+    listenUsersChange(callback) {
+        const path = "/user/";
+
+        firebase.database().ref(path).on('child_changed', (snapshot) => {
+            if (snapshot.key) {
+                const { isTeacher, name, details, location, shareLocation, course } = snapshot.val();
+                callback({ key: snapshot.key, isTeacher, name, location, details, shareLocation, course });
+            }
+        });
+    }
+
+    updateUserDetails(userId, info) {
+        const userPath = "/user/" + userId;
+        let name = '', email = '', course = '', location = null,
+            details = '', isTeacher = false, shareLocation = false;
+
+        if (info.name) name = info.name;
+        if (info.email) email = info.email;
+        if (info.course) course = info.course;
+        if (info.details) details = info.details;
+        if (info.isTeacher) isTeacher = info.isTeacher;
+        if (info.shareLocation) shareLocation = info.shareLocation;
+        if (info.location) location = info.location;
+
+        return firebase.database().ref(userPath).update({
+            name, email, course,
+            details, isTeacher,
+            shareLocation, location
         });
     }
 
@@ -184,5 +234,13 @@ export default class DataManager {
 
     getUserID() {
         return this._userID;
+    }
+
+    setLocation(location) {
+        this._location = location;
+    }
+
+    getLocation() {
+        return this._location;
     }
 }
