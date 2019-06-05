@@ -31,11 +31,11 @@ export default class Register extends React.Component {
         const uid = authJson["user"]["uid"];
         this.dataManager.setUserDetails(uid, email, name, isTeacher, course);
 
-        this.refs.toast("Account created");
+        this.refs.toast.show("Account created");
         navigation.goBack();
         // navigation.state.params.onGoBack({ name, email, password });
       } catch (error) {
-        this.refs.toast(error.toString());
+        this.refs.toast.show(error.toString());
       }
     }
   };

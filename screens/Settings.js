@@ -40,7 +40,7 @@ export default class Settings extends Component {
   saveSettings = () => {
     if (this.state.key && this.state.name != '' && this.state.email != '') {
       this.dataManager.updateUserDetails(this.dataManager.getUserID(), this.state);
-      this.refs.toast("Settings saved!");
+      this.refs.toast.show("Settings saved!");
     }
   }
 
@@ -50,7 +50,6 @@ export default class Settings extends Component {
 
     return (
       <View style={styles.container}>
-        <Toast ref="toast" position='center' />
         <StatusBar barStyle='light-content' />
         <View style={styles.header}>
           <TouchableOpacity style={styles.backButton} onPress={() => goBack()}>
@@ -135,6 +134,7 @@ export default class Settings extends Component {
           onPress={this.saveSettings}
           text={"Save Settings"}
           buttonStyle={{ width: 140 }} />
+        <Toast ref="toast" position='center' />
       </View>
     );
   }
