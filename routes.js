@@ -3,6 +3,7 @@ import {
     createAppContainer,
     createDrawerNavigator
 } from 'react-navigation';
+import { fromLeft, fromRight } from 'react-navigation-transitions';
 
 import Login from './screens/Login';
 import Register from './screens/Register';
@@ -56,9 +57,10 @@ const MainNavigator = createStackNavigator(
 {
     initialRouteName: 'Login',
     headerMode: 'none',
-    defaultNavigationOptions: {
-    
-    }
+    transparentCard: true,
+    cardStyle: { opacity: 1 },
+    defaultNavigationOptions: { },
+    transitionConfig: () => fromRight(),
 });
 
 const AppContainer = createAppContainer(MainNavigator);
