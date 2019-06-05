@@ -43,16 +43,18 @@ export default class TeacherMarker extends Component {
                 >
                     <View style={styles.container}>
                         <View style={{ alignItems: 'center' }}>
-                            <Text style={{ fontSize: 30, color: 'green' }}>
+                            <Text style={{ fontSize: 25, color: '#00BFFF', fontWeight: 'bold', textDecorationLine: 'underline' }}>
                                 {name}
                             </Text>
                         </View>
-                        <Text style={{ fontSize: 20, color: 'green', marginTop: 4 }}>
+                        <Text style={{ fontSize: 20, color: '#00BFFF', marginTop: 4 }}>
                             Course: {course}
                         </Text>
-                        <Text style={{ fontSize: 20, color: 'green' }}>
-                            Details: {details}
-                        </Text>
+                        {details != '' && details ?
+                            (<Text style={{ fontSize: 20, color: '#00BFFF' }}>
+                                Details: {details}
+                            </Text>
+                            ) : <View></View>}
                     </View>
                 </MapView.Callout>
             </MapView.Marker>
@@ -67,7 +69,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     container: {
-        backgroundColor: 'red',
+        backgroundColor: 'white',
         width: 200,
         padding: 4,
         paddingBottom: 10
