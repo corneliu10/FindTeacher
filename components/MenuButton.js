@@ -11,7 +11,6 @@ export const MenuButton = function (props) {
     const bottom = props.bottom ? props.bottom : 65;
 
     handleOnPress = () => {
-        console.log("Menu Pressed");
         openMenu();
     }
 
