@@ -4,9 +4,11 @@ import {
   TextInput, StyleSheet
 } from "react-native";
 
+import { Ionicons } from "@expo/vector-icons";
+import Toast from 'react-native-easy-toast';
+
 import LoginButton from "../components/LoginButton";
 import DataManager from "../utils/DataManager";
-import { Ionicons } from "@expo/vector-icons";
 
 export default class Login extends React.Component {
   state = {
@@ -32,7 +34,7 @@ export default class Login extends React.Component {
       navigation.navigate('Home');
     } catch (error) {
       console.log(error.toString());
-      alert("User not found.. Try again!");
+      this.refs.toast.show("User not found.. Try again!");
     }
   };
 
@@ -49,6 +51,7 @@ export default class Login extends React.Component {
     const { navigation } = this.props;
     return (
       <View style={styles.container}>
+        <Toast ref="toast" position='center' />
         <StatusBar barStyle='light-content' />
         <View style={styles.loginContainer}>
           <View style={styles.title}>

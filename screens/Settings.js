@@ -5,6 +5,7 @@ import {
 } from "react-native";
 import ToggleSwitch from "toggle-switch-react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+import Toast from 'react-native-easy-toast';
 
 import LoginButton from '../components/LoginButton';
 import DataManager from '../utils/DataManager';
@@ -39,7 +40,7 @@ export default class Settings extends Component {
   saveSettings = () => {
     if (this.state.key && this.state.name != '' && this.state.email != '') {
       this.dataManager.updateUserDetails(this.dataManager.getUserID(), this.state);
-      alert("Settings saved!");
+      this.refs.toast("Settings saved!");
     }
   }
 
@@ -49,6 +50,7 @@ export default class Settings extends Component {
 
     return (
       <View style={styles.container}>
+        <Toast ref="toast" position='center' />
         <StatusBar barStyle='light-content' />
         <View style={styles.header}>
           <TouchableOpacity style={styles.backButton} onPress={() => goBack()}>

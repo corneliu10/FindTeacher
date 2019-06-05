@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { View, TextInput, StyleSheet, Text } from "react-native";
+import Toast from 'react-native-easy-toast';
 
 import LoginButton from "../components/LoginButton";
 import DataManager from "../utils/DataManager";
@@ -30,11 +31,11 @@ export default class Register extends React.Component {
         const uid = authJson["user"]["uid"];
         this.dataManager.setUserDetails(uid, email, name, isTeacher, course);
 
-        alert("Account created");
+        this.refs.toast("Account created");
         navigation.goBack();
         // navigation.state.params.onGoBack({ name, email, password });
       } catch (error) {
-        alert(error.toString());
+        this.refs.toast(error.toString());
       }
     }
   };
@@ -44,6 +45,7 @@ export default class Register extends React.Component {
 
     return (
       <View style={styles.container}>
+        <Toast ref="toast" position='center' />
         <View style={styles.loginContainer}>
           <View style={styles.title}>
             <Text>Find a Teacher</Text>
