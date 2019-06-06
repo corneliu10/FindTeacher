@@ -4,14 +4,14 @@
 Link: https://trello.com/b/v8iOxnaw/find-a-teacher
 
 #### UML Diagram:
-You can find the UML diagram [here](https://github.com/corneliu10/FindTeacher/docs)
+You can find the UML diagram [here](https://github.com/corneliu10/FindTeacher/tree/develop/docs)
 
 #### Source control:
 We used git as source control and github.com
 [Link](https://github.com/corneliu10/FindTeacher/branches)
 
 #### Tests:
-You can find unit tests [here](https://github.com/corneliu10/FindTeacher/__tests__)
+You can find unit tests [here](https://github.com/corneliu10/FindTeacher/tree/develop/__tests__)
 
 #### Bug Reporting:
 Some bugs reported [here](https://github.com/corneliu10/FindTeacher/issues)
@@ -23,5 +23,5 @@ https://github.com/corneliu10/FindTeacher/tree/feature/menu_screen_redesign
 https://github.com/corneliu10/FindTeacher/tree/refactor
 
 #### Design Patterns:
-  - Singleton: ./utils/DataManager.js
-  - Factory: ./utils/MessageUtils.js
+  - Singleton: [DataManager.js](https://github.com/corneliu10/FindTeacher/tree/develop/utils/DataManager.js)
+  - Factory: [MessageUtils.js](https://github.com/corneliu10/FindTeacher/tree/develop/utils/MessageUtils.js)
