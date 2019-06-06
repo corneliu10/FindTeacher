@@ -1,4 +1,4 @@
-## Documentation for FindTeacher
+## Documentation
 
 #### User stories:
 Link: https://trello.com/b/v8iOxnaw/find-a-teacher
