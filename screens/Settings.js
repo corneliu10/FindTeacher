@@ -5,6 +5,7 @@ import {
 } from "react-native";
 import ToggleSwitch from "toggle-switch-react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+import { Ionicons } from "@expo/vector-icons";
 import Toast from 'react-native-easy-toast';
 
 import LoginButton from '../components/LoginButton';
@@ -57,17 +58,29 @@ export default class Settings extends Component {
           </TouchableOpacity>
           <Text style={styles.headerText}>Settings</Text>
         </View>
-        <View style={styles.textfieldCard}>
+        <View style={styles.settingsCard}>
+          <Ionicons
+            name="md-mail"
+            color="#00BFFF"
+            size={20}
+            style={{ marginLeft: 6 }}
+          />
           <Text style={styles.label}>Email: </Text>
           <TextInput
             editable={false}
-            style={styles.textInput}
+            style={[styles.textInput, {color: 'rgba(52,52,52, 0.5)'}]}
             onChangeText={email => this.setState({ email })}
             value={email}
             autoCapitalize='none'
           />
         </View>
-        <View style={styles.textfieldCard}>
+        <View style={styles.settingsCard}>
+          <Ionicons
+            name="md-contact"
+            color="#00BFFF"
+            size={20}
+            style={{ marginLeft: 6 }}
+          />
           <Text style={styles.label}>Name: </Text>
           <TextInput
             style={styles.textInput}
@@ -76,7 +89,13 @@ export default class Settings extends Component {
             autoCapitalize='none'
           />
         </View>
-        <View style={styles.textfieldCard}>
+        <View style={styles.settingsCard}>
+          <Ionicons
+            name="md-school"
+            color="#00BFFF"
+            size={20}
+            style={{ marginLeft: 6 }}
+          />
           <Text style={styles.label}>Course: </Text>
           <TextInput
             style={styles.textInput}
@@ -85,7 +104,13 @@ export default class Settings extends Component {
             autoCapitalize='none'
           />
         </View>
-        <View style={styles.textAreaContainer}>
+        <View style={styles.settingsCard}>
+          <Ionicons
+            name="md-document"
+            color="#00BFFF"
+            size={20}
+            style={{ marginLeft: 6 }}
+          />
           <Text style={styles.label}>Details: </Text>
           <TextInput
             style={styles.textArea}
@@ -99,36 +124,40 @@ export default class Settings extends Component {
             blurOnSubmit={true}
           />
         </View>
-        <View style={styles.toggleButton}>
-          <ToggleSwitch
-            isOn={isTeacher}
-            onColor="#00BFFF"
-            offColor="#ededed"
-            size="medium"
-            label="Teacher: "
-            labelStyle={{ color: "#00BFFF", fontWeight: "bold" }}
-            onToggle={isOn => {
-              this.setState({ isTeacher: isOn });
-            }}
-          />
+        <View style={styles.settingsCard}>
+          <View style={styles.toggleButton}>
+            <ToggleSwitch
+              isOn={isTeacher}
+              onColor="#00BFFF"
+              offColor="#ededed"
+              size="medium"
+              label="Teacher: "
+              labelStyle={{ color: "#00BFFF", fontWeight: "bold" }}
+              onToggle={isOn => {
+                this.setState({ isTeacher: isOn });
+              }}
+            />
+          </View>
         </View>
-        <View style={styles.toggleButton}>
-          <ToggleSwitch
-            isOn={shareLocation}
-            onColor="#00BFFF"
-            offColor="#ededed"
-            size="medium"
-            label="Share your location: "
-            labelStyle={{ color: "#00BFFF", fontWeight: "bold" }}
-            onToggle={isOn => {
-              var location = null;
-              if (isOn) {
-                location = this.dataManager.getLocation();
-              }
+        <View style={styles.settingsCard}>
+          <View style={styles.toggleButton}>
+            <ToggleSwitch
+              isOn={shareLocation}
+              onColor="#00BFFF"
+              offColor="#ededed"
+              size="medium"
+              label="Share your location: "
+              labelStyle={{ color: "#00BFFF", fontWeight: "bold" }}
+              onToggle={isOn => {
+                var location = null;
+                if (isOn) {
+                  location = this.dataManager.getLocation();
+                }
 
-              this.setState({ shareLocation: isOn, location });
-            }}
-          />
+                this.setState({ shareLocation: isOn, location });
+              }}
+            />
+          </View>
         </View>
         <LoginButton
           onPress={this.saveSettings}
@@ -143,40 +172,36 @@ export default class Settings extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white'
+    backgroundColor: '#F5F5F5'
   },
-  textfieldCard: {
+  settingsCard: {
     flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: 'red',
-    margin: 3
+    borderColor: '#D3D3D3',
+    marginTop: 6,
+    backgroundColor: 'white',
+    padding: 5
   },
   textInput: {
-    width: 100,
-    borderColor: "black",
+    width: 200,
+    borderColor: "#D3D3D3",
     borderBottomWidth: 1,
     margin: 5,
     paddingLeft: 5
   },
   label: {
-    width: 60
-  },
-  textAreaContainer: {
-    borderColor: 'gray',
-    borderWidth: 1,
-    padding: 5,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center'
+    width: 60,
+    marginLeft: 7
   },
   textArea: {
     flex: 1,
-    paddingBottom: 6,
+    paddingLeft: 5,
+    margin: 5
   },
   toggleButton: {
-    marginTop: 10,
+    margin: 5,
+    marginLeft: 0
   },
   backButton: {
     position: 'absolute',
