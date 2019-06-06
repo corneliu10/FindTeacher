@@ -4,7 +4,7 @@
 Link: https://trello.com/b/v8iOxnaw/find-a-teacher
 
 #### UML Diagram:
-You can find the UML diagram [here](https://github.com/corneliu10/FindTeacher/tree/develop/docs)
+You can find the UML diagram [here](https://github.com/corneliu10/FindTeacher/blob/develop/docs/UML_Diagram.PNG)
 
 #### Source control:
 We used git as source control and github.com
