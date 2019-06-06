@@ -26,15 +26,17 @@ export default class ChatInbox extends React.Component {
     }
 
     addInbox = ({ key, name, isTeacher }) => {
-        const found = this.state.inbox.find((msg) => {
+        const { inbox } = this.state;
+        const found = inbox.find((msg) => {
             if (msg.key == key) {
                 return true;
             }
         })
 
         if (!found) {
+            inbox.push({key, name, isTeacher});
             this.setState({
-                inbox: [{ key, name, isTeacher }, ...this.state.inbox],
+                inbox,
             })
         }
     }
