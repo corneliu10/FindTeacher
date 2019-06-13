@@ -12,8 +12,8 @@ import DataManager from "../utils/DataManager";
 
 export default class Login extends React.Component {
   state = {
-    email: "corneliu.dcv@gmail.com",
-    password: "123456",
+    email: "",
+    password: "",
   };
 
   dataManager = DataManager.getInstance();

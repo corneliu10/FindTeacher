@@ -9,9 +9,9 @@ import ToggleSwitch from "toggle-switch-react-native";
 
 export default class Register extends React.Component {
   state = {
-    name: "aba",
-    email: "b@c.com",
-    password: "123456",
+    name: "",
+    email: "",
+    password: "",
     isTeacher: false,
     course: null
   };
