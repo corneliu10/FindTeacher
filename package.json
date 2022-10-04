@@ -8,7 +8,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "expo": "^32.0.0",
+    "expo": "^46.0.14",
     "firebase": "^6.0.4",
     "native-base": "^2.12.1",
     "react": "16.5.0",
